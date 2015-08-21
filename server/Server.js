@@ -1,6 +1,11 @@
 import express from 'express';
 import zlib from 'zlib';
 import compression from 'compression';
+import indexTemplate from './templates/index';
+
+const compressor = compression({
+  flush: zlib.Z_PARTIAL_FLUSH
+});
 
 export default class Server {
   constructor(port) {
@@ -11,16 +16,14 @@ export default class Server {
     };
 
     this.app.set('port', port);
-    //this.app.use('/js', express.static('../public/js', staticOptions));
-    //this.app.use('/css', express.static('../public/css', staticOptions));
+    this.app.use('/js', express.static('../public/js', staticOptions));
+    this.app.use('/css', express.static('../public/css', staticOptions));
     //this.app.use('/imgs', express.static('../public/imgs', staticOptions));
 
-    this.app.get('/', compression({
-      flush: zlib.Z_PARTIAL_FLUSH
-    }), (req, res) => {
-      res.send('This is the server');
+    this.app.get('/', compressor, (req, res) => {
+      res.send(indexTemplate());
     });
-    
+
     this.app.listen(this.app.get('port'), _ => {
       console.log("Server listening at localhost:" + this.app.get('port'));
     });
