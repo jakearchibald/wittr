@@ -10,9 +10,10 @@ var hbsfy = require('hbsfy');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var mergeStream = require('merge-stream');
+var through = require('through2');
 
 gulp.task('clean', function (done) {
-  del(['dist/*', '!dist/node_modules', '!dist/.git'], done);
+  del(['build'], done);
 });
 
 gulp.task('css', function () {
@@ -56,14 +57,14 @@ function bundle(b, outputPath) {
     .pipe(plugins.sourcemaps.init({loadMaps: true})) // loads map from browserify file
        // Add transformation tasks to the pipeline here.
     .pipe(plugins.sourcemaps.write('./')) // writes .map file
-    .pipe(gulp.dest('build/' + outputDir));
+    .pipe(gulp.dest('build/public/js' + outputDir));
 }
 
 var jsBundles = {
-  'public/js/page.js': createBundle('./public/js/page/index.js')
+  'page.js': createBundle('./public/js/page/index.js')
 };
 
-gulp.task('js', function () {
+gulp.task('js:browser', function () {
   return mergeStream.apply(null,
     Object.keys(jsBundles).map(function(key) {
       return bundle(jsBundles[key], key);
@@ -71,8 +72,33 @@ gulp.task('js', function () {
   );
 });
 
+gulp.task('js:server', function () {
+  return gulp.src('server/**/*.js')
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.babel({stage: 1}))
+    .pipe(plugins.sourcemaps.write('.'))
+    .pipe(gulp.dest('build/server'));
+});
+
+gulp.task('templates:server', function () {
+  return gulp.src('templates/*.hbs')
+    .pipe(plugins.handlebars())
+    .pipe(through.obj(function(file, enc, callback) {
+      // Don't want the whole lib
+      file.defineModuleOptions.require = {Handlebars: 'handlebars/runtime'};
+      callback(null, file);
+    }))
+    .pipe(plugins.defineModule('commonjs'))
+    .pipe(plugins.rename(function(path) {
+      path.extname = '.js';
+    }))
+    .pipe(gulp.dest('build/server/templates'));
+});
+
 gulp.task('watch', function () {
   gulp.watch(['public/scss/**/*.scss'], ['css']);
+  gulp.watch(['templates/*.hbs'], ['templates:server']);
+  gulp.watch(['server/**/*.js'], ['js:server']);
 
   Object.keys(jsBundles).forEach(function(key) {
     var b = jsBundles[key];
@@ -82,6 +108,17 @@ gulp.task('watch', function () {
   });
 });
 
+gulp.task('server', function() {
+  plugins.developServer.listen({
+    path: './index.js',
+    cwd: './build/server'
+  });
+
+  gulp.watch([
+    'build/server/**/*.js'
+  ], plugins.developServer.restart);
+});
+
 gulp.task('serve', function(callback) {
-  runSequence('clean', ['css', 'js'], 'watch', callback);
+  runSequence('clean', ['css', 'js:browser', 'templates:server', 'js:server'], ['server', 'watch'], callback);
 });
