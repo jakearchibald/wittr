@@ -8,14 +8,13 @@ const compressor = compression({
 });
 
 export default class Server {
-  constructor(port) {
+  constructor() {
     this.app = express();
 
     const staticOptions = {
       maxAge: 0
     };
 
-    this.app.set('port', port);
     this.app.use('/js', express.static('../public/js', staticOptions));
     this.app.use('/css', express.static('../public/css', staticOptions));
     //this.app.use('/imgs', express.static('../public/imgs', staticOptions));
@@ -23,9 +22,11 @@ export default class Server {
     this.app.get('/', compressor, (req, res) => {
       res.send(indexTemplate());
     });
+  }
 
-    this.app.listen(this.app.get('port'), _ => {
-      console.log("Server listening at localhost:" + this.app.get('port'));
+  listen(port) {
+    this.app.listen(port, _ => {
+      console.log("Server listening at localhost:" + port);
     });
   }
 }
