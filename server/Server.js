@@ -9,45 +9,58 @@ const compressor = compression({
   flush: zlib.Z_PARTIAL_FLUSH
 });
 
+function createMessage() {
+  const message = {};
+  const generatedMessage = generateMessage();
+  message.avatar = '/imgs/avatar.jpg';
+  message.name = 'Jake Archibald';
+  message.time = new Date().toISOString();
+  message.body = generatedMessage.msg;
+  if (generatedMessage.img) {
+    message.mainImg = generatedMessage.img;
+  }
+  return message;
+}
+
 export default class Server {
   constructor() {
-    this.app = express();
+    this._app = express();
+    this._messages = [];
 
+    for (let i = 0; i < 10; i++) {
+      const msg = createMessage();
+      msg.time = new Date(Date.now() - (1000 * (10 * i))).toISOString();
+      this._messages.push(msg);
+    }
+    
     const staticOptions = {
       maxAge: 0
     };
 
-    this.app.use('/js', express.static('../public/js', staticOptions));
-    this.app.use('/css', express.static('../public/css', staticOptions));
-    this.app.use('/imgs', express.static('../public/imgs', staticOptions));
+    this._app.use('/js', express.static('../public/js', staticOptions));
+    this._app.use('/css', express.static('../public/css', staticOptions));
+    this._app.use('/imgs', express.static('../public/imgs', staticOptions));
 
-    this.app.get('/', compressor, (req, res) => {
-      const messages = [];
-
-      for (let i = 0; i < 10; i++) {
-        const message = {};
-        const generatedMessage = generateMessage();
-        message.avatar = '/imgs/avatar.jpg';
-        message.name = 'Jake Archibald';
-        message.time = '2015-08-24T10:34:17.777Z';
-        message.body = generatedMessage.msg;
-        if (generatedMessage.img) {
-          message.mainImg = generatedMessage.img;
-        }
-        messages.push(message);
-      }
+    this._app.get('/', compressor, (req, res) => {
       res.send(indexTemplate({
-        mainContent: messages.map(item => postTemplate(item)).join('')
+        mainContent: this._messages.map(item => postTemplate(item)).join('')
       }));
     });
 
-    this.app.get('/shell', compressor, (req, res) => {
+    this._app.get('/shell', compressor, (req, res) => {
       res.send(indexTemplate());
     });
+
+    setInterval(_ => this._addMessage(), 1000 * 10)
+  }
+
+  _addMessage() {
+    this._messages.unshift(createMessage());
+    this._messages.pop();
   }
 
   listen(port) {
-    this.app.listen(port, _ => {
+    this._app.listen(port, _ => {
       console.log("Server listening at localhost:" + port);
     });
   }
