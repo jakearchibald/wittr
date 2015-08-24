@@ -3,6 +3,7 @@ import zlib from 'zlib';
 import compression from 'compression';
 import indexTemplate from './templates/index';
 import postTemplate from './templates/post';
+import generateMessage from './generateMessage';
 
 const compressor = compression({
   flush: zlib.Z_PARTIAL_FLUSH
@@ -21,22 +22,22 @@ export default class Server {
     this.app.use('/imgs', express.static('../public/imgs', staticOptions));
 
     this.app.get('/', compressor, (req, res) => {
+      const messages = [];
+
+      for (let i = 0; i < 10; i++) {
+        const message = {};
+        const generatedMessage = generateMessage();
+        message.avatar = '/imgs/avatar.jpg';
+        message.name = 'Jake Archibald';
+        message.time = '2015-08-24T10:34:17.777Z';
+        message.body = generatedMessage.msg;
+        if (generatedMessage.img) {
+          message.mainImg = generatedMessage.img;
+        }
+        messages.push(message);
+      }
       res.send(indexTemplate({
-        mainContent: [
-          {
-            mainImg: {url: '/imgs/wolff.jpg', alt: ''},
-            avatar: '/imgs/avatar.jpg',
-            name: 'Jake Archibald',
-            time: '2015-08-24T10:34:17.777Z',
-            body: 'A team somewhere spent a long time ensuring Southern Rail ticket machines are as fustrating as possible.'
-          },
-          {
-            avatar: '/imgs/avatar.jpg',
-            name: 'Jake Archibald',
-            time: '2015-08-24T10:34:17.777Z',
-            body: 'A team somewhere spent a long time ensuring Southern Rail ticket machines are as fustrating as possible.'
-          }
-        ].map(item => postTemplate(item)).join('')
+        mainContent: messages.map(item => postTemplate(item)).join('')
       }));
     });
 
