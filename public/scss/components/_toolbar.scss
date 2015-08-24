@@ -1,0 +1,27 @@
+.toolbar {
+  @include display-flex;
+  @include align-items(center);
+  position: relative;
+  z-index: 1;
+  background: $primary-color;
+  color: $primary-color-text;
+  height: 56px;
+  box-shadow: 0 0px 11px rgba(0,0,0,0.4);
+
+  @media (min-width: 600px) {
+    height: 72px;
+  }
+
+  & .site-title {
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    margin-left: 16px;
+
+    @media (min-width: 600px) {
+      margin-left: 24px;
+      font-size: 1.3rem;
+    }
+  }
+}

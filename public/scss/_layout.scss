@@ -1,0 +1,16 @@
+.layout {
+  @include display-flex;
+  @include flex-flow(column);
+  height: 100%;
+}
+
+.main {
+  @include flex(1);
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}

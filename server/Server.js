@@ -17,7 +17,7 @@ export default class Server {
 
     this.app.use('/js', express.static('../public/js', staticOptions));
     this.app.use('/css', express.static('../public/css', staticOptions));
-    //this.app.use('/imgs', express.static('../public/imgs', staticOptions));
+    this.app.use('/imgs', express.static('../public/imgs', staticOptions));
 
     this.app.get('/', compressor, (req, res) => {
       res.send(indexTemplate());

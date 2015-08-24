@@ -16,6 +16,11 @@ gulp.task('clean', function (done) {
   del(['build'], done);
 });
 
+gulp.task('copy', function () {
+  return gulp.src('public/imgs/**/*')
+    .pipe(gulp.dest('build/public/imgs/'));
+});
+
 gulp.task('css', function () {
   return gulp.src('public/scss/*.scss')
     .pipe(plugins.sass.sync().on('error', plugins.sass.logError))
@@ -99,6 +104,7 @@ gulp.task('watch', function () {
   gulp.watch(['public/scss/**/*.scss'], ['css']);
   gulp.watch(['templates/*.hbs'], ['templates:server']);
   gulp.watch(['server/**/*.js'], ['js:server']);
+  gulp.watch(['public/imgs/**/*'], ['copy']);
 
   Object.keys(jsBundles).forEach(function(key) {
     var b = jsBundles[key];
@@ -120,5 +126,5 @@ gulp.task('server', function() {
 });
 
 gulp.task('serve', function(callback) {
-  runSequence('clean', ['css', 'js:browser', 'templates:server', 'js:server'], ['server', 'watch'], callback);
+  runSequence('clean', ['css', 'js:browser', 'templates:server', 'js:server', 'copy'], ['server', 'watch'], callback);
 });
