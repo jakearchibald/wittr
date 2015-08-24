@@ -81,6 +81,7 @@ gulp.task('js:server', function () {
   return gulp.src('server/**/*.js')
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.babel({stage: 1}))
+    .on('error', plugins.util.log.bind(plugins.util))
     .pipe(plugins.sourcemaps.write('.'))
     .pipe(gulp.dest('build/server'));
 });
@@ -88,6 +89,7 @@ gulp.task('js:server', function () {
 gulp.task('templates:server', function () {
   return gulp.src('templates/*.hbs')
     .pipe(plugins.handlebars())
+    .on('error', plugins.util.log.bind(plugins.util))
     .pipe(through.obj(function(file, enc, callback) {
       // Don't want the whole lib
       file.defineModuleOptions.require = {Handlebars: 'handlebars/runtime'};

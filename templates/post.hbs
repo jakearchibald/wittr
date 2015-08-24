@@ -1,0 +1,17 @@
+<article class="post">
+  {{#if mainImg}}
+    <img class="post-main-img" src="{{mainImg.url}}" alt="{{mainImg.alt}}">
+  {{/if}}
+  <div class="post-content">
+    <img class="post-avatar" src="{{avatar}}" alt="" width="40" height="40">
+    <div class="post-text-content">
+      <div class="post-title">
+        <h1 class="post-heading">{{name}}</h1>
+        <time class="post-time" datetime="{{time}}">43s</time>
+      </div>
+      <p>
+        {{body}}
+      </p>
+    </div>
+  </div>
+</article>
