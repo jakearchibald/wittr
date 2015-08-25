@@ -40,7 +40,7 @@ IndexController.prototype._openSocket = function() {
   ws.addEventListener('close', function(event) {
     // tell the user
     if (!indexController._lostConnectionToast) {
-      indexController._lostConnectionToast = indexController._toastsView.show("Lost connection. Retrying…");
+      indexController._lostConnectionToast = indexController._toastsView.show("Unable to connect. Retrying…");
     }
 
     // try and reconnect in 5 seconds
