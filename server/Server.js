@@ -6,6 +6,7 @@ import http from 'http';
 import url from 'url';
 import random from 'lodash/number/random';
 import indexTemplate from './templates/index';
+import postsTemplate from './templates/posts';
 import postTemplate from './templates/post';
 import generateMessage from './generateMessage';
 
@@ -53,7 +54,9 @@ export default class Server {
 
     this._app.get('/', compressor, (req, res) => {
       res.send(indexTemplate({
-        mainContent: this._messages.map(item => postTemplate(item)).join('')
+        content: postsTemplate({
+          content: this._messages.map(item => postTemplate(item)).join('')
+        })
       }));
     });
 
@@ -113,7 +116,9 @@ export default class Server {
       sendNow = this._messages.slice();
     }
 
-    socket.send(JSON.stringify(sendNow));
+    if (sendNow.length) {
+      socket.send(JSON.stringify(sendNow));
+    }
   }
 
   _addMessage() {

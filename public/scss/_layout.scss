@@ -6,8 +6,9 @@
 
 .main {
   @include flex(1);
+  @include display-flex;
   overflow: hidden;
-  overflow-y: scroll;
+  position: relative;
 }
 
 html, body {

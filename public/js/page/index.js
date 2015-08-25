@@ -7,7 +7,10 @@ function UserPosts(container) {
   var userPosts = this;
 
   this._container = container;
+  this._scroller = container.querySelector('.posts');
   this._lastTimeUpdate = 0;
+  this._newPostAlert = container.querySelector('.posts-alert');
+  this._scrollUpdatePending = false;
   
   this._timesUpdate();
   this._openSocket();
@@ -18,6 +21,16 @@ function UserPosts(container) {
       userPosts._softTimesUpdate();
     });
   }, 1000 * 30);
+
+  // listen to scrolling
+  this._scroller.addEventListener('scroll', function(event) {
+    if (userPosts._scrollUpdatePending) return;
+    userPosts._scrollUpdatePending = true;
+    requestAnimationFrame(function() {
+      userPosts._onScroll();
+      userPosts._scrollUpdatePending = false;
+    });
+  });
 }
 
 // update all the <time> elements, unless we've 
@@ -56,8 +69,7 @@ UserPosts.prototype._openSocket = function() {
   // add listeners
   ws.addEventListener('message', function(event) {
     requestAnimationFrame(function() {
-      var data = JSON.parse(event.data);
-      userPosts._addPosts(data);
+      userPosts._onSocketMessage(event.data);
     });
   });
 
@@ -69,23 +81,47 @@ UserPosts.prototype._openSocket = function() {
   });
 };
 
-UserPosts.prototype._addPosts = function(datas) {
+// called when the web socket sends message data
+UserPosts.prototype._onSocketMessage = function(data) {
+  var messages = JSON.parse(data);
+  this._addPosts(messages);
+};
+
+// called as the scroll position changes
+UserPosts.prototype._onScroll = function() {
+  if (this._scroller.scrollTop < 60) {
+    this._newPostAlert.classList.remove('active');
+  }
+};
+
+// processes an array of objects representing messages,
+// creates html for them, and adds them to the page
+UserPosts.prototype._addPosts = function(messages) {
   // create html for new posts
-  var htmlString = datas.map(function(data) {
-    return postTemplate(data);
+  var oldLatestPost = this._scroller.querySelector('.post');
+  var oldLatestPostOldPosition = oldLatestPost && oldLatestPost.getBoundingClientRect();
+  var htmlString = messages.map(function(message) {
+    return postTemplate(message);
   }).join('');
 
   // add to the dom
   var nodes = parseHTML(htmlString);
-  this._container.insertBefore(nodes, this._container.firstChild);
+  this._scroller.insertBefore(nodes, this._scroller.firstChild);
   
   // remove really old posts to avoid too much content
-  var posts = toArray(this._container.querySelectorAll('.post'));
+  var posts = toArray(this._scroller.querySelectorAll('.post'));
 
   posts.slice(30).forEach(function(post) {
     post.parentNode.removeChild(post);
   });
 
+  // move scrolling position to make it look like nothing happened
+  if (oldLatestPost) {
+    var oldLatestPostNewPosition = oldLatestPost.getBoundingClientRect();
+    this._scroller.scrollTop = this._scroller.scrollTop + (oldLatestPostNewPosition.top - oldLatestPostOldPosition.top);
+  }
+
+  this._newPostAlert.classList.add('active');
   this._timesUpdate();
 };
 

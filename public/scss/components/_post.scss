@@ -1,3 +1,8 @@
+.posts {
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
 .post {
   background: #fff;
   overflow: hidden;
@@ -59,4 +64,21 @@
 
 .post-time {
   color: #888;
+}
+
+.posts-alert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  background: radial-gradient(ellipse farthest-side at 50% 0, rgba(0, 126, 255, 0.47), transparent);
+  pointer-events: none;
+  will-change: opacity;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+
+  &.active {
+    opacity: 1;
+  }
 }
