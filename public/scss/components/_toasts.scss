@@ -1,0 +1,48 @@
+.toasts {
+  position: absolute;
+  z-index: 3;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  @media (min-width: 640px) {
+    bottom: 30px;
+    left: 30px;
+    right: auto;
+  }
+}
+
+.toast {
+  color: #fff;
+  background: #323232;
+  padding: 14px 24px;
+  padding-right: 0;
+  opacity: 0;
+
+  @include display-flex;
+
+  @media (min-width: 640px) {
+    min-width: 288px;
+    max-width: 568px;
+    border-radius: 2px;
+  }
+  
+  & .toast-content {
+    margin-right: 48px;
+    @include flex(1);
+  }
+
+  & button {
+    margin: 0;
+    margin-right: 24px;
+    color: $accent-color;
+    text-transform: uppercase;
+    @include min-width-min-content;
+
+    &:focus {
+      outline: none;
+      color: #fff;
+    }
+  }
+}

@@ -52,3 +52,13 @@ button:-moz-focus-inner {
 button {
   cursor: pointer;
 }
+
+.unbutton {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  white-space: nowrap;
+}

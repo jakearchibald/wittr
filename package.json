@@ -13,6 +13,7 @@
   "devDependencies": {
     "babelify": "^6.2.0",
     "browserify": "^11.0.1",
+    "closest": "0.0.1",
     "compression": "^1.5.2",
     "del": "^1.2.1",
     "express": "^4.13.3",
@@ -32,6 +33,7 @@
     "lodash": "^3.10.1",
     "merge-stream": "^1.0.0",
     "run-sequence": "^1.1.2",
+    "simple-transition": "^1.0.0",
     "through2": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
