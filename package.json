@@ -16,6 +16,7 @@
     "closest": "0.0.1",
     "compression": "^1.5.2",
     "del": "^1.2.1",
+    "es6-promise": "^3.0.2",
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.1",

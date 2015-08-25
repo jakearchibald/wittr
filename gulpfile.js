@@ -62,10 +62,12 @@ function bundle(b, outputPath) {
     .pipe(plugins.sourcemaps.init({loadMaps: true})) // loads map from browserify file
        // Add transformation tasks to the pipeline here.
     .pipe(plugins.sourcemaps.write('./')) // writes .map file
-    .pipe(gulp.dest('build/public/js' + outputDir));
+    .pipe(gulp.dest('build/public/js/' + outputDir));
 }
 
 var jsBundles = {
+  'polyfills/promise.js': createBundle('./public/js/polyfills/promise.js'),
+  'polyfills/url.js': createBundle('./public/js/polyfills/url.js'),
   'page.js': createBundle('./public/js/page/index.js')
 };
 

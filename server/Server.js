@@ -54,6 +54,7 @@ export default class Server {
 
     this._app.get('/', compressor, (req, res) => {
       res.send(indexTemplate({
+        scripts: '<script src="/js/page.js" defer></script>',
         content: postsTemplate({
           content: this._messages.map(item => postTemplate(item)).join('')
         })

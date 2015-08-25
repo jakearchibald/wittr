@@ -1,0 +1,17 @@
+.card {
+  background: #fff;
+  overflow: hidden;
+  border-radius: 2px;
+  margin: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  @media (min-width: 600px) {
+    margin: 16px;
+    box-shadow: 0 3px 7px rgba(0,0,0,0.15);
+  }
+
+  @media (min-width: 800px) {
+    margin: 16px auto;
+    width: 756px;
+  }
+}
