@@ -80,7 +80,7 @@ Posts.prototype.addPosts = function(messages) {
   // move scrolling position to make it look like nothing happened
   if (oldLatestPost) {
     var oldLatestPostNewPosition = oldLatestPost.getBoundingClientRect();
-    this._scroller.scrollTop = this._scroller.scrollTop + (oldLatestPostNewPosition.top - oldLatestPostOldPosition.top);
+    this._scroller.scrollTop = this._scroller.scrollTop + (Math.round(oldLatestPostNewPosition.top) - Math.round(oldLatestPostOldPosition.top));
   }
 
   this._newPostAlert.classList.add('active');
