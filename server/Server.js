@@ -4,6 +4,7 @@ import compression from 'compression';
 import {Server as WebSocketServer} from 'ws';
 import http from 'http';
 import url from 'url';
+import enableDestroy from 'server-destroy';
 import random from 'lodash/number/random';
 import indexTemplate from './templates/index';
 import postsTemplate from './templates/posts';
@@ -40,7 +41,12 @@ export default class Server {
     this._messages = [];
     this._sockets = [];
     this._server = http.createServer(this._app);
-    this._wss = new WebSocketServer({ server: this._server });
+    enableDestroy(this._server);
+
+    this._wss = new WebSocketServer({
+      server: this._server,
+      path: '/updates'
+    });
     
     const staticOptions = {
       maxAge: 0
@@ -93,11 +99,6 @@ export default class Server {
 
   _onWsConnection(socket) {
     const requestUrl = url.parse(socket.upgradeReq.url, true);
-    
-    if (requestUrl.pathname != '/updates') {
-      socket.close();
-      return;
-    }
 
     this._sockets.push(socket);
 
@@ -130,8 +131,14 @@ export default class Server {
   }
 
   listen(port) {
-    this._server.listen(port, _ => {
+    let tmp = this._server.listen(port, _ => {
       console.log("Server listening at localhost:" + port);
     });
+  }
+
+  setConnectionType(type) {
+    if (type === 'offline') {
+      this._server.destroy();
+    }
   }
 }

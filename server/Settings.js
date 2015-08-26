@@ -2,12 +2,15 @@ import express from 'express';
 import zlib from 'zlib';
 import compression from 'compression';
 import {EventEmitter} from 'events';
+import readFormBody from './readFormBody';
 import indexTemplate from './templates/index';
 import settingsTemplate from './templates/settings';
 
 const compressor = compression({
   flush: zlib.Z_PARTIAL_FLUSH
 });
+
+const connectionTypes = ['perfect', 'slow', 'lie-fi', 'offline'];
 
 export default class Server extends EventEmitter {
   constructor() {
@@ -24,11 +27,24 @@ export default class Server extends EventEmitter {
 
     this._app.get('/', compressor, (req, res) => {
       res.send(indexTemplate({
+        scripts: '<script src="/js/settings.js" defer></script>',
         extraCss: '<link rel="stylesheet" href="/css/settings.css" />',
-        content: settingsTemplate({
-          content: "<div class=card>This is the settings server</div>"
-        })
+        content: settingsTemplate()
       }));
+    });
+
+    this._app.post('/set', compressor, readFormBody(), (req, res) => {
+      if (!req.body
+      || !req.body.connectionType
+      || connectionTypes.indexOf(req.body.connectionType) == -1) {
+        return res.sendStatus(400);
+      }
+
+      res.send({
+        ok: true
+      });
+
+      this.emit('connectionChange', {type: req.body.connectionType});
     });
   }
 

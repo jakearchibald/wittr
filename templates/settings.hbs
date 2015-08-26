@@ -1,3 +1,35 @@
-<div class="scroller settings">
-  {{{ content }}}
+<div class="scroller">
+  <section class="card settings">
+    <form class="settings-form" action="/set" method="POST">
+      <h1>Connection to server</h1>
+      <div>
+        <label class="material-radio">
+          <input type="radio" name="connectionType" value="perfect">
+          <span class="material-radio-btn"></span>
+          <span class="material-radio-text">Perfect</span>
+        </label>
+      </div>
+      <div>
+        <label class="material-radio">
+          <input type="radio" name="connectionType" value="slow">
+          <span class="material-radio-btn"></span>
+          <span class="material-radio-text">Slow</span>
+        </label>
+      </div>
+      <div>
+        <label class="material-radio">
+          <input type="radio" name="connectionType" value="lie-fi">
+          <span class="material-radio-btn"></span>
+          <span class="material-radio-text">Lie-fi</span>
+        </label>
+      </div>
+      <div>
+        <label class="material-radio">
+          <input type="radio" name="connectionType" value="offline">
+          <span class="material-radio-btn"></span>
+          <span class="material-radio-text">Offline</span>
+        </label>
+      </div>
+    </form>
+  </section>
 </div>
