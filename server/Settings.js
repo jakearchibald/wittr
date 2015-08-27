@@ -13,9 +13,10 @@ const compressor = compression({
 const connectionTypes = ['perfect', 'slow', 'lie-fi', 'offline'];
 
 export default class Server extends EventEmitter {
-  constructor() {
+  constructor(port) {
     super();
     this._app = express();
+    this._port = port;
 
     const staticOptions = {
       maxAge: 0
@@ -48,9 +49,9 @@ export default class Server extends EventEmitter {
     });
   }
 
-  listen(port) {
-    this._app.listen(port, _ => {
-      console.log("Config server listening at localhost:" + port);
+  listen() {
+    this._app.listen(this._port, _ => {
+      console.log("Config server listening at localhost:" + this._port);
     });
   }
 }

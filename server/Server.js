@@ -1,11 +1,15 @@
 import express from 'express';
 import zlib from 'zlib';
+import fs from 'fs';
+import os from 'os';
 import compression from 'compression';
 import {Server as WebSocketServer} from 'ws';
 import http from 'http';
 import url from 'url';
+import net from 'net';
 import enableDestroy from 'server-destroy';
 import random from 'lodash/number/random';
+import Throttle from 'throttle';
 import indexTemplate from './templates/index';
 import postsTemplate from './templates/posts';
 import postTemplate from './templates/post';
@@ -14,6 +18,10 @@ import generateMessage from './generateMessage';
 const compressor = compression({
   flush: zlib.Z_PARTIAL_FLUSH
 });
+
+const appServerPath = os.platform() == 'win32' ?
+  `\\?\pipe\offlinefirst${Date.now()}.sock` :
+  'offlinefirst.sock';
 
 function createMessage() {
   const message = {};
@@ -36,15 +44,19 @@ function findIndex(arr, func) {
 }
 
 export default class Server {
-  constructor() {
+  constructor(port) {
     this._app = express();
     this._messages = [];
     this._sockets = [];
-    this._server = http.createServer(this._app);
-    enableDestroy(this._server);
+    this._serverUp = false;
+    this._port = port;
+
+    this._appServer = http.createServer(this._app);
+    this._exposedServer = net.createServer();
+    enableDestroy(this._exposedServer);
 
     this._wss = new WebSocketServer({
-      server: this._server,
+      server: this._appServer,
       path: '/updates'
     });
     
@@ -52,13 +64,15 @@ export default class Server {
       maxAge: 0
     };
 
+    this._exposedServer.on('connection', socket => this._onServerConnection(socket));
     this._wss.on('connection', ws => this._onWsConnection(ws));
 
+    this._app.use(compressor);
     this._app.use('/js', express.static('../public/js', staticOptions));
     this._app.use('/css', express.static('../public/css', staticOptions));
     this._app.use('/imgs', express.static('../public/imgs', staticOptions));
 
-    this._app.get('/', compressor, (req, res) => {
+    this._app.get('/', (req, res) => {
       res.send(indexTemplate({
         scripts: '<script src="/js/page.js" defer></script>',
         content: postsTemplate({
@@ -67,7 +81,7 @@ export default class Server {
       }));
     });
 
-    this._app.get('/shell', compressor, (req, res) => {
+    this._app.get('/shell', (req, res) => {
       res.send(indexTemplate());
     });
 
@@ -95,6 +109,12 @@ export default class Server {
   _broadcast(obj) {
     const msg = JSON.stringify(obj);
     this._sockets.forEach(socket => socket.send(msg));
+  }
+
+  _onServerConnection(socket) {
+    const appSocket = net.connect(appServerPath);
+    socket.pipe(new Throttle(50000)).pipe(appSocket);
+    appSocket.pipe(new Throttle(50000)).pipe(socket);
   }
 
   _onWsConnection(socket) {
@@ -130,15 +150,27 @@ export default class Server {
     this._broadcast([message]);
   }
 
-  listen(port) {
-    let tmp = this._server.listen(port, _ => {
-      console.log("Server listening at localhost:" + port);
+  _listen() {
+    this._serverUp = true;
+    this._exposedServer.listen(this._port, _ => {
+      console.log("Server listening at localhost:" + this._port);
     });
+
+    if (os.platform() != 'win32' && fs.existsSync(appServerPath)) {
+      fs.unlinkSync(appServerPath);
+    }
+    this._appServer.listen(appServerPath);
   }
 
   setConnectionType(type) {
     if (type === 'offline') {
-      this._server.destroy();
+      if (!this._serverUp) return;
+      this._exposedServer.destroy();
+      this._serverUp = false;
+    }
+    else {
+      if (this._serverUp) return;
+      this._listen();
     }
   }
 }
