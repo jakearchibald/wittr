@@ -11,7 +11,8 @@ const users = [
   {avatar: "ray", name: "Ray Scott"},
   {avatar: "sam", name: "Sam Munoz"},
   {avatar: "craig", name: "Craig Robbins"},
-  {avatar: "lillie", name: "Lillie Wolfe"}
+  {avatar: "lillie", name: "Lillie Wolfe"},
+  {avatar: "susan", name: "Susan Keller"}
 ];
 
 const markov = markovCreator(3);
