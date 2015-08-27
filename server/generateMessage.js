@@ -8,7 +8,8 @@ const users = [
   {avatar: "marc", name: "Marc Stone"},
   {avatar: "ellen", name: "Ellen Clayton"},
   {avatar: "ruth", name: "Ruth Maxwell"},
-  {avatar: "ray", name: "Ray Scott"}
+  {avatar: "ray", name: "Ray Scott"},
+  {avatar: "sam", name: "Sam Munoz"}
 ];
 
 const markov = markovCreator(3);
@@ -21,7 +22,7 @@ export function generateMessage() {
   const user = users[Math.floor(Math.random() * users.length)];
   let image;
 
-  if (Math.random() < 5) {
+  if (Math.random() < 0.2) {
     image = photos[Math.floor(Math.random() * photos.length)];
   }
 
