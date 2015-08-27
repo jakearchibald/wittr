@@ -1,6 +1,24 @@
 .post-main-img {
+  position: absolute;
+  top: 0;
   width: 100%;
+
+  @supports (object-fit: cover) {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.post-main-img-container {
+  position: relative;
+  overflow: hidden;
   background: #e4e4e4;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-top: 56.25%;
+  }
 }
 
 .post-content {

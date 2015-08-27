@@ -17,8 +17,10 @@ gulp.task('clean', function (done) {
 });
 
 gulp.task('copy', function () {
-  return gulp.src('public/imgs/**/*')
-    .pipe(gulp.dest('build/public/imgs/'));
+  return mergeStream(
+    gulp.src('public/imgs/**/*').pipe(gulp.dest('build/public/imgs/')),
+    gulp.src('server/*.txt').pipe(gulp.dest('build/server/'))
+  );
 });
 
 gulp.task('css', function () {

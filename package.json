@@ -33,6 +33,7 @@
     "hbsfy": "^2.2.1",
     "hbsify": "^1.0.1",
     "lodash": "^3.10.1",
+    "markov": "0.0.7",
     "merge-stream": "^1.0.0",
     "run-sequence": "^1.1.2",
     "simple-transition": "^1.0.0",

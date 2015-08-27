@@ -1,9 +1,20 @@
 <article class="card post">
   {{#if mainImg}}
-    <img class="post-main-img" src="{{mainImg.url}}" alt="{{mainImg.alt}}">
+    <div class="post-main-img-container">
+      <img
+        class="post-main-img"
+        alt=""
+        src="https://farm{{mainImg.farm}}.staticflickr.com/{{mainImg.server}}/{{mainImg.id}}_{{mainImg.secret}}_c.jpg"
+        srcset="https://farm{{mainImg.farm}}.staticflickr.com/{{mainImg.server}}/{{mainImg.id}}_{{mainImg.secret}}_b.jpg 1024w,
+                https://farm{{mainImg.farm}}.staticflickr.com/{{mainImg.server}}/{{mainImg.id}}_{{mainImg.secret}}_c.jpg 800w,
+                https://farm{{mainImg.farm}}.staticflickr.com/{{mainImg.server}}/{{mainImg.id}}_{{mainImg.secret}}_z.jpg 640w,
+                https://farm{{mainImg.farm}}.staticflickr.com/{{mainImg.server}}/{{mainImg.id}}_{{mainImg.secret}}_n.jpg 320w"
+        sizes="(min-width: 800px) 765px, (min-width: 600px) calc(100vw - 32px), calc(100vw - 16px)"  
+      >
+    </div>
   {{/if}}
   <div class="post-content">
-    <img class="post-avatar" src="{{avatar}}" alt="" width="40" height="40">
+    <img class="post-avatar" src="/imgs/avatars/{{avatar}}-1x.jpg" srcset="/imgs/avatars/{{avatar}}-2x.jpg 2x, /imgs/avatars/{{avatar}}-3x.jpg 3x" alt="" width="40" height="40">
     <div class="post-text-content">
       <div class="post-title">
         <h1 class="post-heading">{{name}}</h1>

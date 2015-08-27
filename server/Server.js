@@ -8,11 +8,12 @@ import http from 'http';
 import url from 'url';
 import net from 'net';
 import Throttle from 'throttle';
+import markovCreator from 'markov';
 import random from 'lodash/number/random';
 import indexTemplate from './templates/index';
 import postsTemplate from './templates/posts';
 import postTemplate from './templates/post';
-import generateMessage from './generateMessage';
+import {generateReady, generateMessage} from './generateMessage';
 
 const compressor = compression({
   flush: zlib.Z_PARTIAL_FLUSH
@@ -27,19 +28,6 @@ const connectionProperties = {
   slow: {bps: 1000, delay: 1000},
   'lie-fi': {bps: 1, delay: 10000}
 };
-
-function createMessage() {
-  const message = {};
-  const generatedMessage = generateMessage();
-  message.avatar = '/imgs/avatar.jpg';
-  message.name = 'Jake Archibald';
-  message.time = new Date().toISOString();
-  message.body = generatedMessage.msg;
-  if (generatedMessage.img) {
-    message.mainImg = generatedMessage.img;
-  }
-  return message;
-}
 
 function findIndex(arr, func) {
   for (let i = 0; i < arr.length; i++) {
@@ -91,18 +79,20 @@ export default class Server {
       res.send(indexTemplate());
     });
 
-    // generate initial messages
-    let time = new Date();
+    generateReady.then(_ => {
+      // generate initial messages
+      let time = new Date();
 
-    for (let i = 0; i < 10; i++) {
-      const msg = createMessage();
-      const timeDiff = random(5000, 15000);
-      time = new Date(time - timeDiff);
-      msg.time = time.toISOString();
-      this._messages.push(msg);
-    }
+      for (let i = 0; i < 10; i++) {
+        const msg = generateMessage();
+        const timeDiff = random(5000, 15000);
+        time = new Date(time - timeDiff);
+        msg.time = time.toISOString();
+        this._messages.push(msg);
+      }
 
-    this._generateDelayedMessages();
+      this._generateDelayedMessages();
+    });
   }
 
   _generateDelayedMessages() {
@@ -168,7 +158,7 @@ export default class Server {
   }
 
   _addMessage() {
-    const message = createMessage();
+    const message = generateMessage();
     this._messages.unshift(message);
     this._messages.pop();
     this._broadcast([message]);
