@@ -19,7 +19,8 @@ gulp.task('clean', function (done) {
 gulp.task('copy', function () {
   return mergeStream(
     gulp.src('public/imgs/**/*').pipe(gulp.dest('build/public/imgs/')),
-    gulp.src('server/*.txt').pipe(gulp.dest('build/server/'))
+    gulp.src('server/*.txt').pipe(gulp.dest('build/server/')),
+    gulp.src('public/*.json').pipe(gulp.dest('build/public/'))
   );
 });
 

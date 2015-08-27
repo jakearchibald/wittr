@@ -1,0 +1,11 @@
+{
+  "name": "Wittr",
+  "scope": "/",
+  "icons": [{
+    "src": "/imgs/icon.png",
+    "sizes": "144x144",
+    "type": "image/png"
+  }],
+  "display": "standalone",
+  "start_url": "/"
+}
