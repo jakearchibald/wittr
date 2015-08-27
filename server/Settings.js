@@ -17,6 +17,7 @@ export default class Server extends EventEmitter {
     super();
     this._app = express();
     this._port = port;
+    this._currentConnectionType = 'perfect';
 
     const staticOptions = {
       maxAge: 0
@@ -30,7 +31,18 @@ export default class Server extends EventEmitter {
       res.send(indexTemplate({
         scripts: '<script src="/js/settings.js" defer></script>',
         extraCss: '<link rel="stylesheet" href="/css/settings.css" />',
-        content: settingsTemplate()
+        content: settingsTemplate({
+          currentConnectionType: this._currentConnectionType,
+          connectionTypes: [
+            {value: 'perfect', title: "Perfect"},
+            {value: 'slow', title: "Slow"},
+            {value: 'lie-fi', title: "Lie-fi"},
+            {value: 'offline', title: "Offline"}
+          ].map(type => {
+            type.checked = type.value === this._currentConnectionType;
+            return type;
+          })
+        })
       }));
     });
 
@@ -45,6 +57,7 @@ export default class Server extends EventEmitter {
         ok: true
       });
 
+      this._currentConnectionType = req.body.connectionType;
       this.emit('connectionChange', {type: req.body.connectionType});
     });
   }
