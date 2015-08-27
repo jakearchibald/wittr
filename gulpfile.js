@@ -71,7 +71,7 @@ var jsBundles = {
   'polyfills/promise.js': createBundle('./public/js/polyfills/promise.js'),
   'polyfills/url.js': createBundle('./public/js/polyfills/url.js'),
   'settings.js': createBundle('./public/js/settings/index.js'),
-  'page.js': createBundle('./public/js/page/index.js'),
+  'main.js': createBundle('./public/js/main/index.js'),
   'sw.js': createBundle('./public/js/sw/index.js')
 };
 

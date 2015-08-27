@@ -69,7 +69,7 @@ export default class Server {
 
     this._app.get('/', (req, res) => {
       res.send(indexTemplate({
-        scripts: '<script src="/js/page.js" defer></script>',
+        scripts: '<script src="/js/main.js" defer></script>',
         content: postsTemplate({
           content: this._messages.map(item => postTemplate(item)).join('')
         })
