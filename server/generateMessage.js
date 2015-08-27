@@ -9,7 +9,9 @@ const users = [
   {avatar: "ellen", name: "Ellen Clayton"},
   {avatar: "ruth", name: "Ruth Maxwell"},
   {avatar: "ray", name: "Ray Scott"},
-  {avatar: "sam", name: "Sam Munoz"}
+  {avatar: "sam", name: "Sam Munoz"},
+  {avatar: "craig", name: "Craig Robbins"},
+  {avatar: "lillie", name: "Lillie Wolfe"}
 ];
 
 const markov = markovCreator(3);
