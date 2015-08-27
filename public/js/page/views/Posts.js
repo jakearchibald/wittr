@@ -87,6 +87,7 @@ Posts.prototype.addPosts = function(messages) {
   this._timesUpdate();
 };
 
+// get the date of the latest post, or null if there are no posts
 Posts.prototype.getLatestPostDate = function(messages) {
   var timeEl = this._container.querySelector('.post-time');
   if (!timeEl) return null;

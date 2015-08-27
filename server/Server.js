@@ -63,6 +63,7 @@ export default class Server {
 
     this._app.use(compressor);
     this._app.use('/js', express.static('../public/js', staticOptions));
+    this._app.use('/sw.js', express.static('../public/js/sw.js', staticOptions));
     this._app.use('/css', express.static('../public/css', staticOptions));
     this._app.use('/imgs', express.static('../public/imgs', staticOptions));
 
