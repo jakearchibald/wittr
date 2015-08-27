@@ -7,9 +7,8 @@ import {Server as WebSocketServer} from 'ws';
 import http from 'http';
 import url from 'url';
 import net from 'net';
-import enableDestroy from 'server-destroy';
-import random from 'lodash/number/random';
 import Throttle from 'throttle';
+import random from 'lodash/number/random';
 import indexTemplate from './templates/index';
 import postsTemplate from './templates/posts';
 import postTemplate from './templates/post';
@@ -22,6 +21,12 @@ const compressor = compression({
 const appServerPath = os.platform() == 'win32' ?
   `\\?\pipe\offlinefirst${Date.now()}.sock` :
   'offlinefirst.sock';
+
+const connectionProperties = {
+  perfect: {bps: 100000000, delay: 0},
+  slow: {bps: 1000, delay: 1000},
+  'lie-fi': {bps: 1, delay: 10000}
+};
 
 function createMessage() {
   const message = {};
@@ -50,10 +55,11 @@ export default class Server {
     this._sockets = [];
     this._serverUp = false;
     this._port = port;
+    this._connectionType = '';
+    this._connections = [];
 
     this._appServer = http.createServer(this._app);
     this._exposedServer = net.createServer();
-    enableDestroy(this._exposedServer);
 
     this._wss = new WebSocketServer({
       server: this._appServer,
@@ -112,9 +118,27 @@ export default class Server {
   }
 
   _onServerConnection(socket) {
-    const appSocket = net.connect(appServerPath);
-    socket.pipe(new Throttle(50000)).pipe(appSocket);
-    appSocket.pipe(new Throttle(50000)).pipe(socket);
+    let closed = false;
+    this._connections.push(socket);
+
+    socket.on('close', _ => {
+      closed = true;
+      this._connections.slice(this._connections.indexOf(socket), 1);
+    });
+
+    const connection = connectionProperties[this._connectionType];
+    const makeConnection = _ => {
+      if (closed) return;
+      const appSocket = net.connect(appServerPath);
+      socket.pipe(new Throttle(connection.bps)).pipe(appSocket);
+      appSocket.pipe(new Throttle(connection.bps)).pipe(socket);
+    };
+
+    if (connection.delay) {
+      setTimeout(makeConnection, connection.delay);
+      return;
+    }
+    makeConnection();
   }
 
   _onWsConnection(socket) {
@@ -162,14 +186,24 @@ export default class Server {
     this._appServer.listen(appServerPath);
   }
 
+  _destroyConnections() {
+    this._connections.forEach(c => c.destroy());
+  }
+
   setConnectionType(type) {
+    if (type === this._connectionType) return;
+    this._connectionType = type;
+    this._destroyConnections();
+
     if (type === 'offline') {
       if (!this._serverUp) return;
-      this._exposedServer.destroy();
+      this._exposedServer.close();
+      this._appServer.close();
       this._serverUp = false;
+      return;
     }
-    else {
-      if (this._serverUp) return;
+
+    if (!this._serverUp) {
       this._listen();
     }
   }
