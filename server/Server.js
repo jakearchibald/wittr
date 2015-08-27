@@ -25,7 +25,7 @@ const appServerPath = os.platform() == 'win32' ?
 
 const connectionProperties = {
   perfect: {bps: 100000000, delay: 0},
-  slow: {bps: 1000, delay: 1000},
+  slow: {bps: 5000, delay: 1500},
   'lie-fi': {bps: 1, delay: 10000}
 };
 
@@ -73,6 +73,13 @@ export default class Server {
           content: this._messages.map(item => postTemplate(item)).join('')
         })
       }));
+    });
+
+    this._app.get('/photos/:farm-:server-:id-:secret-:type', (req, res) => {
+      const flickrUrl = `http://farm${req.params.farm}.staticflickr.com/${req.params.server}/${req.params.id}_${req.params.secret}_${req.params.type}.jpg`;
+      http.request(flickrUrl, flickrRes => {
+        flickrRes.pipe(res);
+      }).end();
     });
 
     this._app.get('/shell', (req, res) => {
