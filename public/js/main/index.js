@@ -3,7 +3,7 @@ import IndexController from './IndexController';
 
 const polyfillsNeeded = [];
 
-if (!('Promise') in self) polyfillsNeeded.push('/js/polyfills/promise.js');
+if (!('Promise' in self)) polyfillsNeeded.push('/js/polyfills/promise.js');
 
 try {
   new URL('b', 'http://a');
