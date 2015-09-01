@@ -29,6 +29,13 @@ const connectionProperties = {
   'lie-fi': {bps: 1, delay: 10000}
 };
 
+const imgSizeToFlickrSuffix = {
+  '1024px': 'b',
+  '800px': 'c',
+  '640px': 'z',
+  '320px': 'n'
+};
+
 function findIndex(arr, func) {
   for (let i = 0; i < arr.length; i++) {
     if (func(arr[i], i, arr)) return i;
@@ -77,8 +84,8 @@ export default class Server {
       }));
     });
 
-    this._app.get('/photos/:farm-:server-:id-:secret-:type', (req, res) => {
-      const flickrUrl = `http://farm${req.params.farm}.staticflickr.com/${req.params.server}/${req.params.id}_${req.params.secret}_${req.params.type}.jpg`;
+    this._app.get('/photos/:farm-:server-:id-:secret-:type.jpg', (req, res) => {
+      const flickrUrl = `http://farm${req.params.farm}.staticflickr.com/${req.params.server}/${req.params.id}_${req.params.secret}_${imgSizeToFlickrSuffix[req.params.type]}.jpg`;
       const flickrRequest = http.request(flickrUrl, flickrRes => {
         flickrRes.pipe(res);
       });

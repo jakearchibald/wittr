@@ -4,12 +4,14 @@
       <img
         class="post-main-img"
         alt=""
-        src="/photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-c"
-        srcset="/photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-b 1024w,
-                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-c 800w,
-                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-z 640w,
-                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-n 320w"
-        sizes="(min-width: 800px) 765px, (min-width: 600px) calc(100vw - 32px), calc(100vw - 16px)"  
+        src="/photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-800px.jpg"
+        srcset="/photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-1024px.jpg 1024w,
+                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-800px.jpg 800w,
+                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-640px.jpg 640w,
+                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-320px.jpg 320w"
+        sizes="(min-width: 800px) 765px,
+               (min-width: 600px) calc(100vw - 32px),
+               calc(100vw - 16px)"  
       >
     </div>
   {{/if}}
