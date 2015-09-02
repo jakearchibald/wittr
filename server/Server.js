@@ -72,6 +72,7 @@ export default class Server {
     this._app.use('/js', express.static('../public/js', staticOptions));
     this._app.use('/css', express.static('../public/css', staticOptions));
     this._app.use('/imgs', express.static('../public/imgs', staticOptions));
+    this._app.use('/avatars', express.static('../public/avatars', staticOptions));
     this._app.use('/sw.js', express.static('../public/sw.js', staticOptions));
     this._app.use('/manifest.json', express.static('../public/manifest.json', staticOptions));
 

@@ -19,6 +19,7 @@ gulp.task('clean', function (done) {
 gulp.task('copy', function () {
   return mergeStream(
     gulp.src('public/imgs/**/*').pipe(gulp.dest('build/public/imgs/')),
+    gulp.src('public/avatars/**/*').pipe(gulp.dest('build/public/avatars/')),
     gulp.src('server/*.txt').pipe(gulp.dest('build/server/')),
     gulp.src('public/*.json').pipe(gulp.dest('build/public/'))
   );
@@ -113,7 +114,7 @@ gulp.task('watch', function () {
   gulp.watch(['public/scss/**/*.scss'], ['css']);
   gulp.watch(['templates/*.hbs'], ['templates:server']);
   gulp.watch(['server/**/*.js'], ['js:server']);
-  gulp.watch(['public/imgs/**/*'], ['copy']);
+  gulp.watch(['public/imgs/**/*', 'public/avatars/**/*', 'server/*.txt', 'public/*.json'], ['copy']);
 
   Object.keys(jsBundles).forEach(function(key) {
     var b = jsBundles[key];
