@@ -15,6 +15,8 @@ import postsTemplate from './templates/posts';
 import postTemplate from './templates/post';
 import {generateReady, generateMessage} from './generateMessage';
 
+const maxMessages = 30;
+
 const compressor = compression({
   flush: zlib.Z_PARTIAL_FLUSH
 });
@@ -110,7 +112,7 @@ export default class Server {
       // generate initial messages
       let time = new Date();
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < maxMessages; i++) {
         const msg = generateMessage();
         const timeDiff = random(5000, 15000);
         time = new Date(time - timeDiff);

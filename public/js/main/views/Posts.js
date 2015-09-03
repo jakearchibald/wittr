@@ -3,6 +3,8 @@ import toArray from 'lodash/lang/toArray';
 import parseHTML from './../../utils/parseHTML';
 import humanReadableTimeDiff from './../../utils/humanReadableTimeDiff';
 
+const maxMessages = 30;
+
 export default function Posts(container) {
   var posts = this;
 
@@ -73,7 +75,7 @@ Posts.prototype.addPosts = function(messages) {
   // remove really old posts to avoid too much content
   var posts = toArray(this._scroller.querySelectorAll('.post'));
 
-  posts.slice(30).forEach(function(post) {
+  posts.slice(maxMessages).forEach(function(post) {
     post.parentNode.removeChild(post);
   });
 
