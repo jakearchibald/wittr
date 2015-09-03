@@ -100,7 +100,10 @@ export default class Server {
     });
 
     this._app.get('/shell', (req, res) => {
-      res.send(indexTemplate());
+      res.send(indexTemplate({
+        scripts: '<script src="/js/main.js" defer></script>',
+        content: postsTemplate()
+      }));
     });
 
     generateReady.then(_ => {
