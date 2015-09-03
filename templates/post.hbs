@@ -4,11 +4,11 @@
       <img
         class="post-main-img"
         alt=""
-        src="/photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-800px.jpg"
-        srcset="/photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-1024px.jpg 1024w,
-                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-800px.jpg 800w,
-                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-640px.jpg 640w,
-                /photos/{{mainImg.farm}}-{{mainImg.server}}-{{mainImg.id}}-{{mainImg.secret}}-320px.jpg 320w"
+        src="{{mainImg}}-800px.jpg"
+        srcset="{{mainImg}}-1024px.jpg 1024w,
+                {{mainImg}}-800px.jpg 800w,
+                {{mainImg}}-640px.jpg 640w,
+                {{mainImg}}-320px.jpg 320w"
         sizes="(min-width: 800px) 765px,
                (min-width: 600px) calc(100vw - 32px),
                calc(100vw - 16px)"  
@@ -20,9 +20,9 @@
       class="post-avatar"
       alt=""
       width="40" height="40"
-      src="/avatars/{{avatar}}-1x.jpg"
-      srcset="/avatars/{{avatar}}-2x.jpg 2x,
-              /avatars/{{avatar}}-3x.jpg 3x"
+      src="{{avatar}}-1x.jpg"
+      srcset="{{avatar}}-2x.jpg 2x,
+              {{avatar}}-3x.jpg 3x"
     >
     <div class="post-text-content">
       <div class="post-title">

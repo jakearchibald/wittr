@@ -30,18 +30,13 @@ export function generateMessage() {
   }
 
   message.id = (Date.now() + random(1, 10000)).toString(36);
-  message.avatar = user.avatar;
+  message.avatar = '/avatars/' + user.avatar;
   message.name = user.name;
   message.time = new Date().toISOString();
   message.body = markov.fill(markov.pick(), random(3, 15)).join(' ');
   
   if (image) {
-    message.mainImg = {
-      farm: image.farm,
-      id: image.id,
-      secret: image.secret,
-      server: image.server
-    };
+    message.mainImg = `/photos/${image.farm}-${image.server}-${image.id}-${image.secret}`;
   }
 
   return message;
