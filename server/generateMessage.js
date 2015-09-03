@@ -36,7 +36,7 @@ export function generateMessage() {
   message.body = markov.fill(markov.pick(), random(3, 15)).join(' ');
   
   if (image) {
-    message.mainImg = `/photos/${image.farm}-${image.server}-${image.id}-${image.secret}`;
+    message.photo = `/photos/${image.farm}-${image.server}-${image.id}-${image.secret}`;
   }
 
   return message;
