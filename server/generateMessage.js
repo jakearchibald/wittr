@@ -29,6 +29,7 @@ export function generateMessage() {
     image = photos[Math.floor(Math.random() * photos.length)];
   }
 
+  message.id = (Date.now() + random(1, 10000)).toString(36);
   message.avatar = user.avatar;
   message.name = user.name;
   message.time = new Date().toISOString();

@@ -32,7 +32,7 @@
     "handlebars": "^3.0.3",
     "hbsfy": "^2.2.1",
     "hbsify": "^1.0.1",
-    "idb": "^1.0.0",
+    "idb": "^1.0.1",
     "lodash": "^3.10.1",
     "markov": "0.0.7",
     "merge-stream": "^1.0.0",
