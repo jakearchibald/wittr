@@ -95,3 +95,8 @@ Posts.prototype.getLatestPostDate = function(messages) {
   if (!timeEl) return null;
   return new Date(timeEl.getAttribute('datetime'));
 };
+
+// Any there any posts in the view?
+Posts.prototype.showingPosts = function(messages) {
+  return !!this._container.querySelector('.post');
+};
