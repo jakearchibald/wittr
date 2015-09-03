@@ -83,9 +83,9 @@ Posts.prototype.addPosts = function(messages) {
   if (oldLatestPost) {
     var oldLatestPostNewPosition = oldLatestPost.getBoundingClientRect();
     this._scroller.scrollTop = this._scroller.scrollTop + (Math.round(oldLatestPostNewPosition.top) - Math.round(oldLatestPostOldPosition.top));
+    this._newPostAlert.classList.add('active');
   }
 
-  this._newPostAlert.classList.add('active');
   this._timesUpdate();
 };
 
