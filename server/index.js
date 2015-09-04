@@ -1,8 +1,15 @@
 import Server from './Server';
 import Settings from './Settings';
+import minimist from 'minimist';
 
-const server = new Server(8888);
-const settings = new Settings(8889);
+const argv = minimist(process.argv, {
+  'default': {
+    'config-server-port': 8889,
+    'server-port': 8888
+  }
+});
+const server = new Server(argv['server-port']);
+const settings = new Settings(argv['config-server-port']);
 
 settings.listen();
 server.setConnectionType('perfect');

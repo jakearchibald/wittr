@@ -12,6 +12,8 @@ var buffer = require('vinyl-buffer');
 var mergeStream = require('merge-stream');
 var through = require('through2');
 
+var args = process.argv.slice(3);
+
 gulp.task('clean', function (done) {
   del(['build'], done);
 });
@@ -127,7 +129,8 @@ gulp.task('watch', function () {
 gulp.task('server', function() {
   plugins.developServer.listen({
     path: './index.js',
-    cwd: './build/server'
+    cwd: './build/server',
+    args: args
   });
 
   gulp.watch([

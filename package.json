@@ -36,6 +36,7 @@
     "lodash": "^3.10.1",
     "markov": "0.0.7",
     "merge-stream": "^1.0.0",
+    "minimist": "^1.2.0",
     "run-sequence": "^1.1.2",
     "simple-transition": "^1.0.0",
     "throttle": "^1.0.3",

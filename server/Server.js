@@ -27,7 +27,7 @@ const appServerPath = os.platform() == 'win32' ?
 
 const connectionProperties = {
   perfect: {bps: 100000000, delay: 0},
-  slow: {bps: 5000, delay: 1500},
+  slow: {bps: 4000, delay: 3000},
   'lie-fi': {bps: 1, delay: 10000}
 };
 
