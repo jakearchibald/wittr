@@ -8,4 +8,9 @@
     margin: 3px 0 21px;
     color: #919191;
   }
+
+  & .warning {
+    color: red;
+    display: none;
+  }
 }

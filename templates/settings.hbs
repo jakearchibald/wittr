@@ -2,6 +2,9 @@
   <section class="card settings">
     <form class="settings-form" action="/set" method="POST">
       <h1>Connection to server</h1>
+      <div class="warning">
+        <p>You browser doesn't support the fetch API, so this won't work. Try Chrome or Firefox.</p>
+      </div>
       {{#each connectionTypes}}
         <div>
           <label class="material-radio">

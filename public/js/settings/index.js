@@ -8,3 +8,7 @@ settingsForm.addEventListener('change', event => {
     body: new FormData(settingsForm)
   });
 });
+
+if (!self.fetch) {
+  document.querySelector('.warning').style.display = 'block';
+}
