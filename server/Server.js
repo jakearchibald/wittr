@@ -22,7 +22,7 @@ const compressor = compression({
 });
 
 const appServerPath = os.platform() == 'win32' ?
-  `\\?\pipe\offlinefirst${Date.now()}.sock` :
+  '\\\\.\\pipe\\offlinefirst' + Date.now() + '.sock' :
   'offlinefirst.sock';
 
 const connectionProperties = {
@@ -51,6 +51,7 @@ export default class Server {
     this._messages = [];
     this._sockets = [];
     this._serverUp = false;
+    this._appServerUp = false;
     this._port = port;
     this._connectionType = '';
     this._connections = [];
@@ -142,13 +143,16 @@ export default class Server {
 
     socket.on('close', _ => {
       closed = true;
-      this._connections.slice(this._connections.indexOf(socket), 1);
+      this._connections.splice(this._connections.indexOf(socket), 1);
     });
+
+    socket.on('error', err => console.log(err));
 
     const connection = connectionProperties[this._connectionType];
     const makeConnection = _ => {
       if (closed) return;
       const appSocket = net.connect(appServerPath);
+      appSocket.on('error', err => console.log(err));
       socket.pipe(new Throttle(connection.bps)).pipe(appSocket);
       appSocket.pipe(new Throttle(connection.bps)).pipe(socket);
     };
@@ -199,10 +203,10 @@ export default class Server {
       console.log("Server listening at localhost:" + this._port);
     });
 
-    if (os.platform() != 'win32' && fs.existsSync(appServerPath)) {
-      fs.unlinkSync(appServerPath);
+    if (!this._appServerUp) {
+      this._appServer.listen(appServerPath);
+      this._appServerUp = true;
     }
-    this._appServer.listen(appServerPath);
   }
 
   _destroyConnections() {
@@ -217,7 +221,6 @@ export default class Server {
     if (type === 'offline') {
       if (!this._serverUp) return;
       this._exposedServer.close();
-      this._appServer.close();
       this._serverUp = false;
       return;
     }
