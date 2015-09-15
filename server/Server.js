@@ -77,6 +77,7 @@ export default class Server {
     this._app.use('/imgs', express.static('../public/imgs', staticOptions));
     this._app.use('/avatars', express.static('../public/avatars', staticOptions));
     this._app.use('/sw.js', express.static('../public/sw.js', staticOptions));
+    this._app.use('/sw.js.map', express.static('../public/sw.js.map', staticOptions));
     this._app.use('/manifest.json', express.static('../public/manifest.json', staticOptions));
 
     this._app.get('/', (req, res) => {
