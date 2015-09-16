@@ -69,7 +69,7 @@
   left: 0;
   right: 0;
   height: 44px;
-  background: radial-gradient(ellipse farthest-side at 50% 0, rgba(0, 126, 255, 0.47), rgba(0, 126, 255, 0));
+  background: radial-gradient(ellipse farthest-side at 50% 0, rgba(saturate($primary-color, 30%), 0.47), rgba(saturate($primary-color, 30%), 0));
   pointer-events: none;
   will-change: opacity;
   opacity: 0;
