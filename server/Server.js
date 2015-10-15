@@ -205,6 +205,7 @@ export default class Server {
     });
 
     if (!this._appServerUp) {
+      if (fs.existsSync(appServerPath)) fs.unlinkSync(appServerPath);
       this._appServer.listen(appServerPath);
       this._appServerUp = true;
     }
