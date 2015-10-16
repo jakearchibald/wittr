@@ -27,23 +27,26 @@ function figureOutConnectionType() {
 }
 
 const tests = {
+  demo() {
+    return Promise.resolve(["Yep, the demo's working!", 'demo.gif', true]);
+  },
   offline() {
     return figureOutConnectionType().then(type => {
       if (type == 'offline') {
         return ["Yep! The server is totally dead!", '1.gif', true];
       }
-      return ["Hmm, no, looks like the server is still up", 'mistake.gif', false];
+      return ["Hmm, no, looks like the server is still up", 'nope.gif', false];
     });
   },
   'lie-fi': function() {
     return figureOutConnectionType().then(type => {
       switch(type) {
         case "lie-fi":
-          return ["Yeeeep, that's lie-fi alright.", '1.gif', true];
+          return ["Yeeeep, that's lie-fi alright.", '2.gif', true];
         case "offline":
-          return ["Hmm, no, looks like the server is down.", 'mistake.gif', false];
+          return ["Hmm, no, looks like the server is down.", 'nope.gif', false];
         default:
-          return ["The server responded way too fast for lie-fi.", 'mistake.gif', false];
+          return ["The server responded way too fast for lie-fi.", 'not-quite.gif', false];
       }
     });
   }
@@ -118,9 +121,9 @@ export default class TestController {
     }
 
     return fetch(`/imgs/test-memes/${url}`).then(r => r.blob()).then(blob => {
-      // hahaha, yes, I know
       this._currentMemeImg = new Image();
-      this._currentMemeImg.src = URL.createObjectURL(blob.slice(2));
+      // hahaha, yes, I know
+      this._currentMemeImg.src = URL.createObjectURL(blob.slice(1));
       this._memeImgContainer.appendChild(this._currentMemeImg);
     });
   }
