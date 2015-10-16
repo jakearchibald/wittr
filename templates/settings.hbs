@@ -16,4 +16,24 @@
       {{/each}}
     </form>
   </section>
+  <section class="card settings tester">
+    <form class="test-form">
+      <h1>Test results</h1>
+      <p>
+        During the course you'll be able to come here and run tests to verify everything
+        is working as expected.
+      </p>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input test-id" type="text" id="testId" name="testId" />
+        <label class="mdl-textfield__label" for="testId">Test ID</label>
+      </div>
+      <div class="feedback-text"></div>
+      <div class="meme-container"><div class="meme-img-container"></div></div>
+    </form>
+  </section>
 </div>
+<script>
+  var config = {
+    appPort: {{appPort}}
+  };
+</script>

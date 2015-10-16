@@ -110,6 +110,11 @@ export default class Server {
       }));
     });
 
+    this._app.get('/ping', (req, res) => {
+      res.set('Access-Control-Allow-Origin', '*');
+      res.status(200).send({ok: true});
+    });
+
     generateReady.then(_ => {
       // generate initial messages
       let time = new Date();

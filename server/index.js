@@ -9,7 +9,7 @@ const argv = minimist(process.argv, {
   }
 });
 const server = new Server(argv['server-port']);
-const settings = new Settings(argv['config-server-port']);
+const settings = new Settings(argv['config-server-port'], argv['server-port']);
 
 settings.listen();
 server.setConnectionType('perfect');

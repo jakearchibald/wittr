@@ -13,10 +13,11 @@ const compressor = compression({
 const connectionTypes = ['perfect', 'slow', 'lie-fi', 'offline'];
 
 export default class Server extends EventEmitter {
-  constructor(port) {
+  constructor(port, appPort) {
     super();
     this._app = express();
     this._port = port;
+    this._appPort = appPort;
     this._currentConnectionType = 'perfect';
 
     const staticOptions = {
@@ -32,12 +33,13 @@ export default class Server extends EventEmitter {
         scripts: '<script src="/js/settings.js" defer></script>',
         extraCss: '<link rel="stylesheet" href="/css/settings.css" />',
         content: settingsTemplate({
+          appPort: this._appPort,
           currentConnectionType: this._currentConnectionType,
           connectionTypes: [
             {value: 'perfect', title: "Perfect"},
             {value: 'slow', title: "Slow"},
             {value: 'lie-fi', title: "Lie-fi"},
-            {value: 'offline', title: "Offline"}
+            {value: 'offline', title: "Offline"},
           ].map(type => {
             type.checked = type.value === this._currentConnectionType;
             return type;
