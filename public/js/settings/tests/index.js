@@ -72,8 +72,8 @@ export default {
     return remoteEval(function() {
       return !!navigator.serviceWorker.controller;
     }).then(controlled => {
-      if (controlled) return ["Page looks controlled!", '2.gif', true];
-      return ["Doesn't look like there's a serviceworker registered :(", 'nope.gif', false];
+      if (controlled) return ["Service worker successfully registered!", '3.gif', true];
+      return ["Doesn't look like there's a service worker registered :(", 'nope.gif', false];
     });
   }
 };
