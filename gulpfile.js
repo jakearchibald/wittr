@@ -37,8 +37,12 @@ gulp.task('css', function () {
 });
 
 function createBundle(src) {
+  if (!src.push) {
+    src = [src];
+  }
+
   var customOpts = {
-    entries: [src],
+    entries: src,
     debug: true
   };
   var opts = assign({}, watchify.args, customOpts);
@@ -76,7 +80,7 @@ var jsBundles = {
   'js/polyfills/url.js': createBundle('./public/js/polyfills/url.js'),
   'js/settings.js': createBundle('./public/js/settings/index.js'),
   'js/main.js': createBundle('./public/js/main/index.js'),
-  'sw.js': createBundle('./public/js/sw/index.js')
+  'sw.js': createBundle(['./public/js/sw/index.js', './public/js/sw/preroll/index.js'])
 };
 
 gulp.task('js:browser', function () {
