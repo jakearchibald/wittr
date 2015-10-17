@@ -13,6 +13,7 @@ import random from 'lodash/number/random';
 import indexTemplate from './templates/index';
 import postsTemplate from './templates/posts';
 import postTemplate from './templates/post';
+import remoteExecutorTemplate from './templates/remote-executor';
 import {generateReady, generateMessage} from './generateMessage';
 
 const maxMessages = 30;
@@ -113,6 +114,10 @@ export default class Server {
     this._app.get('/ping', (req, res) => {
       res.set('Access-Control-Allow-Origin', '*');
       res.status(200).send({ok: true});
+    });
+
+    this._app.get('/remote', (req, res) => {
+      res.send(remoteExecutorTemplate());
     });
 
     generateReady.then(_ => {

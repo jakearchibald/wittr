@@ -80,6 +80,7 @@ var jsBundles = {
   'js/polyfills/url.js': createBundle('./public/js/polyfills/url.js'),
   'js/settings.js': createBundle('./public/js/settings/index.js'),
   'js/main.js': createBundle('./public/js/main/index.js'),
+  'js/remote-executor.js': createBundle('./public/js/remote-executor/index.js'),
   'sw.js': createBundle(['./public/js/sw/index.js', './public/js/sw/preroll/index.js'])
 };
 
