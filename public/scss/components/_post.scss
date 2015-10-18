@@ -14,6 +14,9 @@
   overflow: hidden;
   background: #e4e4e4;
 
+  // fix layout on retina displays
+  transform: translateZ(0);
+
   &::before {
     content: '';
     display: block;
