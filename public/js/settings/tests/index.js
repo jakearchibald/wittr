@@ -56,7 +56,7 @@ export default {
       return ["Hmm, no, looks like the server is still up", 'nope.gif', false];
     });
   },
-  'lie-fi': function() {
+  ['lie-fi']() {
     return figureOutConnectionType().then(type => {
       switch(type) {
         case "lie-fi":
@@ -74,7 +74,7 @@ export default {
       return ["Doesn't look like there's a service worker registered :(", 'nope.gif', false];
     });
   },
-  'sw-waiting': function() {
+  ['sw-waiting']() {
     return remoteEval(function() {
       return navigator.serviceWorker.getRegistration('/').then(reg => {
         if (!reg) return ["Doesn't look like there's a service worker registered at all!", 'sad.gif', false];
@@ -83,7 +83,7 @@ export default {
       });
     });
   },
-  'sw-active': function() {
+  ['sw-active']() {
     return remoteEval(function() {
       return navigator.serviceWorker.getRegistration('/').then(reg => {
         if (!reg) return ["Doesn't look like there's a service worker registered at all!", 'sad.gif', false];
@@ -92,7 +92,7 @@ export default {
       });
     });
   },
-  'html-response': function() {
+  ['html-response']() {
     return remoteEval(function() {
       return fetch('/').then(response => {
         const type = response.headers.get('content-type');
