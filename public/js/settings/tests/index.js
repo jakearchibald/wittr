@@ -109,5 +109,26 @@ export default {
         });
       });
     });
+  },
+  ['gif-response']() {
+    return remoteEval(function() {
+      return fetch('/').then(response => {
+        const type = response.headers.get('content-type');
+
+        if (!type || !type.toLowerCase().startsWith('text/html')) {
+          return ["Looks like it isn't just URLs ending with .jpg that are being intercepted", 'not-quite.gif', false];
+        }
+
+        return fetch('/blah.jpg').then(response => {
+          const type = response.headers.get('content-type');
+
+          if (!type || !type.toLowerCase().startsWith('image/gif')) {
+            return ["Doesn't look like urls ending .jpg are getting a gif in response", 'no-cry.gif', false];
+          }
+
+          return ["Images are being intercepted!", "7.gif", true]; 
+        })
+      });
+    })
   }
 };
