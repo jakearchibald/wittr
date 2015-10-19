@@ -5,6 +5,10 @@ git cherry-pick log-requests &&
 git branch -f log-requests &&
 git cherry-pick custom-response &&
 git branch -f custom-response &&
+git cherry-pick gif-response &&
+git branch -f gif-response &&
+git cherry-pick gif-img-response &&
+git branch -f gif-img-response &&
 git cherry-pick install-and-cache &&
 git branch -f install-and-cache &&
 git cherry-pick handling-updates &&
