@@ -126,9 +126,38 @@ export default {
             return ["Doesn't look like urls ending .jpg are getting a gif in response", 'no-cry.gif', false];
           }
 
-          return ["Images are being intercepted!", "7.gif", true]; 
+          return ["Images are being intercepted!", "7.gif", true];
         })
       });
+    })
+  },
+  ['gif-error']() {
+    return remoteEval(function() {
+      return Promise.all([
+        fetch('/imgs/dr-evil.gif?bypass-sw'),
+        fetch('/' + Math.random())
+      ]).then(responses => {
+        const type = responses[1].headers.get('content-type');
+
+        if (!type || !type.toLowerCase().startsWith('image/gif')) {
+          return ["Doesn't look like 404 responses are getting a gif in return", 'nope.gif', false];
+        }
+
+        return Promise.all(
+          responses.map(r => r.arrayBuffer().then(b => new Uint8Array(b)))
+        ).then(arrays => {
+          const itemsToCheck = 2000;
+          const a1 = arrays[0];
+          const a2 = arrays[1];
+
+          for (let i = 0; i < itemsToCheck; i++) {
+            if (a1[i] !== a2[i]) {
+              return ["Doesn't look like 404 responses are getting the dr-evil gif in return", 'not-quite.gif', false];
+            }
+          }
+          return ["Yay! 404 pages get gifs!", "8.gif", true];
+        })
+      })
     })
   }
 };
