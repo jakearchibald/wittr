@@ -131,7 +131,7 @@ export default {
       });
     })
   },
-  ['gif-error']() {
+  ['gif-404']() {
     return remoteEval(function() {
       return Promise.all([
         fetch('/imgs/dr-evil.gif?bypass-sw'),
