@@ -134,17 +134,24 @@ export default {
   ['gif-404']() {
     return remoteEval(function() {
       return Promise.all([
+        fetch('/'),
         fetch('/imgs/dr-evil.gif?bypass-sw'),
         fetch('/' + Math.random())
       ]).then(responses => {
-        const type = responses[1].headers.get('content-type');
+        const pageType = responses[0].headers.get('content-type');
+
+        if (!pageType || !pageType.toLowerCase().startsWith('text/html')) {
+          return ["Looks like non-404 pages are getting the gif too", 'not-quite.gif', false];
+        }
+
+        const type = responses[2].headers.get('content-type');
 
         if (!type || !type.toLowerCase().startsWith('image/gif')) {
           return ["Doesn't look like 404 responses are getting a gif in return", 'nope.gif', false];
         }
 
         return Promise.all(
-          responses.map(r => r.arrayBuffer().then(b => new Uint8Array(b)))
+          responses.slice(1).map(r => r.arrayBuffer().then(b => new Uint8Array(b)))
         ).then(arrays => {
           const itemsToCheck = 2000;
           const a1 = arrays[0];
