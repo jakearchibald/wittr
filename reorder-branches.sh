@@ -9,6 +9,8 @@ git cherry-pick gif-response &&
 git branch -f gif-response &&
 git cherry-pick gif-img-response &&
 git branch -f gif-img-response &&
+git cherry-pick error-handling &&
+git branch -f error-handling &&
 git cherry-pick install-and-cache &&
 git branch -f install-and-cache &&
 git cherry-pick handling-updates &&
