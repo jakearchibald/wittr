@@ -12,15 +12,20 @@ function remoteEval(js) {
     js = '(' + js.toString() + ')()';
   }
 
-  return messenger.message({
-    eval: js
-  }).catch(err => {
-    error = err;
-  }).then(val => {
-    messenger.destruct();
-    if (error) throw error;
-    return val;
+  return figureOutConnectionType().then(type => {
+    if (type === 'offline') return ["Looks like the server is offline", 'sad.gif', false];
+
+    return messenger.message({
+      eval: js
+    }).catch(err => {
+      error = err;
+    }).then(val => {
+      messenger.destruct();
+      if (error) throw error;
+      return val;
+    });
   });
+
 }
 
 function figureOutConnectionType() {
