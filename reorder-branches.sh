@@ -13,6 +13,10 @@ git cherry-pick error-handling &&
 git branch -f error-handling &&
 git cherry-pick error-gif &&
 git branch -f error-gif &&
+git cherry-pick task-install &&
+git branch -f task-install &&
+git cherry-pick task-cache &&
+git branch -f task-cache &&
 git cherry-pick install-and-cache &&
 git branch -f install-and-cache &&
 git cherry-pick handling-updates &&

@@ -165,6 +165,52 @@ export default {
           return ["Yay! 404 pages get gifs!", "8.gif", true];
         })
       })
-    })
+    });
+  },
+  ['install-cached']() {
+    return remoteEval(function() {
+      const expectedUrls = [
+        '/',
+        '/js/main.js',
+        '/css/main.css',
+        '/imgs/icon.png',
+        'https://fonts.gstatic.com/s/roboto/v15/2UX7WLTfW3W8TclTUvlFyQ.woff',
+        'https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff'
+      ].map(url => new URL(url, location).href);
+
+      return caches.has('wittr-static-v1').then(has => {
+        if (!has) return ["Can't find a cache named wittr-static-v1", 'nope.gif', false];
+
+        return caches.open('wittr-static-v1').then(c => c.keys()).then(reqs => {
+          const urls = reqs.map(r => r.url);
+          const allAccountedFor = expectedUrls.every(url => urls.includes(url));
+
+          if (allAccountedFor) {
+            return ["Yay! The cache is ready to go!", "9.gif", true];
+          }
+          return ["The cache is there, but it's missing some things", 'not-quite.gif', false];
+        });
+      })
+    });
+  },
+  ['cache-served']() {
+    return remoteEval(function() {
+      return Promise.all([
+        fetch('/'),
+        fetch('/ping').then(r => r.json()).catch(e => ({ok: false}))
+      ]).then(responses => {
+        const cachedResponse = responses[0];
+        const jsonResponse = responses[1];
+
+        if (!jsonResponse.ok) return ["Doesn't look like non-cached requests are getting through", 'not-quite.gif', false];
+
+        return new Promise(r => setTimeout(r, 2000)).then(_ => fetch('/')).then(response => {
+          if (cachedResponse.headers.get('Date') === response.headers.get('Date')) {
+            return ["Yay! Cached responses are being returned!", "10.gif", true]; 
+          }
+          return ["Doesn't look like responses are returned from the cache", 'nope.gif', false];
+        })
+      });
+    });
   }
 };
