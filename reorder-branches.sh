@@ -19,6 +19,8 @@ git cherry-pick task-cache-response &&
 git branch -f task-cache-response &&
 git cherry-pick install-and-cache &&
 git branch -f install-and-cache &&
+git cherry-pick task-handling-updates &&
+git branch -f task-handling-updates &&
 git cherry-pick handling-updates &&
 git branch -f handling-updates &&
 git cherry-pick update-interaction &&
