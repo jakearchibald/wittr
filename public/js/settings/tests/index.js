@@ -211,11 +211,67 @@ export default {
 
         return new Promise(r => setTimeout(r, 2000)).then(_ => fetch('/')).then(response => {
           if (cachedResponse.headers.get('Date') === response.headers.get('Date')) {
-            return ["Yay! Cached responses are being returned!", "10.gif", true]; 
+            return ["Yay! Cached responses are being returned!", "10.gif", true];
           }
           return ["Doesn't look like responses are returned from the cache", 'nope.gif', false];
         })
       });
+    });
+  },
+  ['new-cache-ready']() {
+    return remoteEval(function() {
+      return Promise.all([
+        caches.has('wittr-static-v1'),
+        caches.has('wittr-static-v2')
+      ]).then(hasCaches => {
+        if (!hasCaches[0]) return ["Looks like the v1 cache has already gone", 'sad.gif', false];
+        if (!hasCaches[1]) return ["Can't find the wittr-static-v2 cache", 'sad.gif', false];
+
+        return Promise.all(
+          ['wittr-static-v1', 'wittr-static-v2'].map(name => {
+            return caches.open(name)
+              .then(c => c.match('/css/main.css'))
+              .then(r => r && r.text())
+          })
+        ).then(cssTexts => {
+          if (!cssTexts[0]) return ["Can't find CSS in the v1 cache", 'sad.gif', false];
+          if (!cssTexts[1]) return ["Can't find CSS in the v2 cache", 'sad.gif', false];
+
+          if (cssTexts[0] === cssTexts[1]) {
+            return ["There's a new cache, but the CSS looks the same", 'nope.gif', false];
+          }
+          return ["Yay! The new cache is ready, but isn't disrupting current pages", "11.gif", true];
+        });
+      });
+    })
+  },
+  ['new-cache-used']() {
+    return remoteEval(function() {
+      return Promise.all([
+        caches.has('wittr-static-v1'),
+        caches.has('wittr-static-v2')
+      ]).then(hasCaches => {
+        if (hasCaches[0]) return ["Looks like the v1 cache is still there", 'not-quite.gif', false];
+        if (!hasCaches[1]) return ["Can't find the wittr-static-v2 cache", 'sad.gif', false];
+
+        return Promise.all([
+          fetch('/css/main.css'),
+          new Promise(r => setTimeout(r, 2000)).then(_ => fetch('/css/main.css'))
+        ]).then(responses => {
+          if (responses[0].headers.get('Date') != responses[1].headers.get('Date')) {
+            return ["Doesn't look like the CSS is being served from the cache", 'mistake.gif', false];
+          }
+
+          return getWindow('/').then(win => {
+            const bg = win.getComputedStyle(win.document.querySelector('.toolbar')).backgroundColor;
+
+            if (bg == 'rgb(63, 81, 181)') {
+              return ["Doesn't look like the header color has changed", 'no-cry.gif', false]; 
+            }
+            return ["Yay! You safely updated the CSS!", "12.gif", true];
+          });
+        })
+      })
     });
   }
 };
