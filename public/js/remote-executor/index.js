@@ -22,10 +22,10 @@ self.addEventListener('message', event => {
 });
 
 
-self.getWindow = url => {
+self.openIframe = url => {
   return new Promise((resolve, reject) => {
     const iframe = document.createElement('iframe');
-    iframe.addEventListener('load', _ => resolve(iframe.contentWindow));
+    iframe.addEventListener('load', _ => resolve(iframe));
     iframe.addEventListener('error', _ => reject(Error("iframe failed")));
     iframe.src = url;
     document.body.appendChild(iframe);

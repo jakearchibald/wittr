@@ -262,8 +262,10 @@ export default {
             return ["Doesn't look like the CSS is being served from the cache", 'mistake.gif', false];
           }
 
-          return getWindow('/').then(win => {
-            const bg = win.getComputedStyle(win.document.querySelector('.toolbar')).backgroundColor;
+          return openIframe('/').then(iframe => {
+            const win = iframe.contentWindow;
+            const doc = win.document;
+            const bg = win.getComputedStyle(doc.querySelector('.toolbar')).backgroundColor;
 
             if (bg == 'rgb(63, 81, 181)') {
               return ["Doesn't look like the header color has changed", 'no-cry.gif', false]; 
@@ -273,5 +275,24 @@ export default {
         })
       })
     });
+  },
+  ['update-notify']() {
+    return remoteEval(function() {
+      return navigator.serviceWorker.getRegistration().then(reg => {
+        if (!reg.waiting) return ["Doesn't look like there's a waiting worker", 'nope.gif', false];
+
+        return openIframe('/').then(iframe => {
+          const win = iframe.contentWindow;
+          const doc = win.document;
+
+          return new Promise(r => setTimeout(r, 500)).then(_ => {
+            if (doc.querySelector('.toast')) {
+              return ["Yay! There are notifications!", "13.gif", true];
+            }
+            return ["Doesn't look like there's a notification being triggered", 'sad.gif', false];
+          })
+        });
+      });
+    })
   }
 };
