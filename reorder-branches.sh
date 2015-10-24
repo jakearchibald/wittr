@@ -23,6 +23,8 @@ git cherry-pick task-handling-updates &&
 git branch -f task-handling-updates &&
 git cherry-pick handling-updates &&
 git branch -f handling-updates &&
+git cherry-pick task-update-interaction &&
+git branch -f task-update-interaction &&
 git cherry-pick update-interaction &&
 git branch -f update-interaction &&
 git cherry-pick page-shell &&
