@@ -97,8 +97,10 @@ export default class Server {
       });
 
       flickrRequest.on('error', err => {
-        // TODO: send a fallback image?
-        res.status(500).send({err: true});
+        // TODO: use a real flickr image as a fallback
+        res.sendFile('imgs/icon.png', {
+          root: __dirname + '/../public/'
+        });
       });
 
       flickrRequest.end();
