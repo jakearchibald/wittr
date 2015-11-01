@@ -1,0 +1,42 @@
+<div class="scroller">
+  <ol class="gifs">
+    <script>
+      document.querySelector('.gifs').addEventListener('load', event => {
+        const target = event.target;
+        if (target.nodeName == 'IMG') {
+          target.parentNode.style.display = 'block';
+          target.parentNode.style.minWidth = (target.naturalWidth * (target.height/target.naturalHeight)) * 0.85 + 'px';
+        }
+      }, true);
+    </script>
+    <li><img src="/imgs/test-memes/demo.gif"></li>
+    <li><img src="/imgs/test-memes/mistake.gif"></li>
+    <li><img src="/imgs/test-memes/no-cry.gif"></li>
+    <li><img src="/imgs/test-memes/nope.gif"></li>
+    <li><img src="/imgs/test-memes/not-quite.gif"></li>
+    <li><img src="/imgs/test-memes/sad.gif"></li>
+    <li><img src="/imgs/test-memes/1.gif"></li>
+    <li><img src="/imgs/test-memes/2.gif"></li>
+    <li><img src="/imgs/test-memes/3.gif"></li>
+    <li><img src="/imgs/test-memes/4.gif"></li>
+    <li><img src="/imgs/test-memes/5.gif"></li>
+    <li><img src="/imgs/test-memes/6.gif"></li>
+    <li><img src="/imgs/test-memes/7.gif"></li>
+    <li><img src="/imgs/test-memes/8.gif"></li>
+    <li><img src="/imgs/test-memes/9.gif"></li>
+    <li><img src="/imgs/test-memes/10.gif"></li>
+    <li><img src="/imgs/test-memes/11.gif"></li>
+    <li><img src="/imgs/test-memes/12.gif"></li>
+    <li><img src="/imgs/test-memes/13.gif"></li>
+    <li><img src="/imgs/test-memes/14.gif"></li>
+    <li><img src="/imgs/test-memes/15.gif"></li>
+    <li><img src="/imgs/test-memes/16.gif"></li>
+    <li><img src="/imgs/test-memes/17.gif"></li>
+    <li><img src="/imgs/test-memes/18.gif"></li>
+    <li><img src="/imgs/test-memes/19.gif"></li>
+    <li><img src="/imgs/test-memes/20.gif"></li>
+    <li><img src="/imgs/test-memes/21.gif"></li>
+    <li><img src="/imgs/test-memes/22.gif"></li>
+    <li><img src="/imgs/test-memes/23.gif"></li>
+  </ol>
+</div>

@@ -51,6 +51,10 @@ self.addEventListener('fetch', function(event) {
       event.respondWith(serveAvatar(event.request));
       return;
     }
+    if (requestUrl.pathname.startsWith('/imgs/test-memes/')) {
+      event.respondWith(serveTestGif(event.request));
+      return;
+    }
   }
 
   event.respondWith(
@@ -87,6 +91,19 @@ function servePhoto(request) {
         return networkResponse;
       });
     });
+  });
+}
+
+function serveTestGif(request) {
+  return fetch(request).then(response => {
+    if (!response.headers.get('Content-Type').startsWith('image/gif')) {
+      // Not a gif, so just return the response
+      return response;
+    }
+
+    // TODO: make this serve the response, but with the first
+    // byte of the body stripped off
+    return response;
   });
 }
 

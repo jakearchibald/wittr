@@ -13,6 +13,7 @@ import random from 'lodash/number/random';
 import indexTemplate from './templates/index';
 import postsTemplate from './templates/posts';
 import postTemplate from './templates/post';
+import gifsTemplate from './templates/gifs';
 import remoteExecutorTemplate from './templates/remote-executor';
 import idbTestTemplate from './templates/idb-test';
 import {generateReady, generateMessage} from './generateMessage';
@@ -125,6 +126,13 @@ export default class Server {
 
     this._app.get('/idb-test/', (req, res) => {
       res.send(idbTestTemplate());
+    });
+
+    this._app.get('/gifs/', (req, res) => {
+      res.send(indexTemplate({
+        extraCss: '<link rel="stylesheet" href="/css/gifs.css" />',
+        content: gifsTemplate()
+      }));
     });
 
     generateReady.then(_ => {
