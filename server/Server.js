@@ -90,6 +90,13 @@ export default class Server {
       }));
     });
 
+    this._app.get('/skeleton', (req, res) => {
+      res.send(indexTemplate({
+        scripts: '<script src="/js/main.js" defer></script>',
+        content: postsTemplate()
+      }));
+    });
+
     this._app.get('/photos/:farm-:server-:id-:secret-:type.jpg', (req, res) => {
       const flickrUrl = `http://farm${req.params.farm}.staticflickr.com/${req.params.server}/${req.params.id}_${req.params.secret}_${imgSizeToFlickrSuffix[req.params.type]}.jpg`;
       const flickrRequest = http.request(flickrUrl, flickrRes => {
@@ -104,13 +111,6 @@ export default class Server {
       });
 
       flickrRequest.end();
-    });
-
-    this._app.get('/shell', (req, res) => {
-      res.send(indexTemplate({
-        scripts: '<script src="/js/main.js" defer></script>',
-        content: postsTemplate()
-      }));
     });
 
     this._app.get('/ping', (req, res) => {
