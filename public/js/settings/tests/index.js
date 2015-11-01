@@ -294,5 +294,24 @@ export default {
         });
       });
     })
+  },
+  ['update-reload']() {
+    return remoteEval(function() {
+      return navigator.serviceWorker.getRegistration().then(reg => {
+        if (!reg.waiting) return ["Doesn't look like there's a waiting worker", 'nope.gif', false];
+
+        return openIframe('/').then(iframe => {
+          const win = iframe.contentWindow;
+          const doc = win.document;
+
+          return new Promise(resolve => {
+            setTimeout(_ => resolve(["Didn't detect the page being reloaded :(", 'sad.gif', false]), 8000);
+            iframe.addEventListener('load', _ => {
+              resolve(["Yay! The page reloaded!", "14.gif", true]);
+            })
+          });
+        });
+      });
+    })
   }
 };
