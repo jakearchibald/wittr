@@ -37,3 +37,7 @@ git cherry-pick cache-photos &&
 git branch -f cache-photos &&
 git cherry-pick cache-avatars &&
 git branch -f cache-avatars
+git cherry-pick task-gif-viewer &&
+git branch -f task-gif-viewer
+git cherry-pick gif-viewer &&
+git branch -f gif-viewer
