@@ -101,9 +101,9 @@ function serveTestGif(request) {
       return response;
     }
 
-    // TODO: make this serve the response, but with the first
-    // byte of the body stripped off
-    return response;
+    return response.blob().then(function(blob) {
+      return new Response(blob.slice(1));
+    });
   });
 }
 
