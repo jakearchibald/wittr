@@ -313,5 +313,15 @@ export default {
         });
       });
     })
+  },
+  ['serve-skeleton']() {
+    return remoteEval(function() {
+      return fetch('/').then(r => r.text()).then(text => {
+        if (text.includes('post-content')) {
+          return ["Doesn't look like the page skeleton is being served", 'nope.gif', false]
+        }
+        return ["Yay! The page skeleton is being served!", "15.gif", true];
+      });
+    });
   }
 };
