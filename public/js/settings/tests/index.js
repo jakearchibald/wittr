@@ -318,9 +318,15 @@ export default {
     return remoteEval(function() {
       return fetch('/').then(r => r.text()).then(text => {
         if (text.includes('post-content')) {
-          return ["Doesn't look like the page skeleton is being served", 'nope.gif', false]
+          return ["Doesn't look like the page skeleton is being served", 'nope.gif', false];
         }
-        return ["Yay! The page skeleton is being served!", "15.gif", true];
+
+        return fetch('https://google.com/').then(r => r.text()).catch(e => '').then(gText => {
+          if (gText == text) {
+            return ["Looks like you're serving the skeleton for https://google.com/ too!", 'not-quite.gif', false];
+          }
+          return ["Yay! The page skeleton is being served!", "15.gif", true];
+        });
       });
     });
   }
