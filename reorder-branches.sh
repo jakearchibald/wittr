@@ -31,15 +31,13 @@ git cherry-pick update-interaction &&
 git branch -f update-interaction &&
 git cherry-pick page-skeleton &&
 git branch -f page-skeleton &&
-git cherry-pick idb-playground &&
-git branch -f idb-playground &&
 git cherry-pick idb-store &&
 git branch -f idb-store &&
 git cherry-pick cache-photos &&
 git branch -f cache-photos &&
 git cherry-pick cache-avatars &&
-git branch -f cache-avatars
+git branch -f cache-avatars &&
 git cherry-pick task-gif-viewer &&
-git branch -f task-gif-viewer
+git branch -f task-gif-viewer &&
 git cherry-pick gif-viewer &&
 git branch -f gif-viewer
