@@ -26,6 +26,6 @@ dbPromise.then(function(db) {
 
 dbPromise.then(function(db) {
   // TODO: in the keyval store, set
-  // "best-animal" to your favourite animal
+  // "favoriteAnimal" to your favourite animal
   // eg "cat" or "dog"
 });
