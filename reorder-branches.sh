@@ -31,6 +31,8 @@ git cherry-pick update-interaction &&
 git branch -f update-interaction &&
 git cherry-pick page-skeleton &&
 git branch -f page-skeleton &&
+git cherry-pick task-idb-people &&
+git branch -f task-idb-people &&
 git cherry-pick idb-store &&
 git branch -f idb-store &&
 git cherry-pick cache-photos &&
