@@ -39,8 +39,10 @@ git cherry-pick task-idb-store &&
 git branch -f task-idb-store &&
 git cherry-pick task-show-stored &&
 git branch -f task-show-stored &&
-git cherry-pick show-stored &&
-git branch -f show-stored &&
+git cherry-pick task-clean-db &&
+git branch -f task-clean-db &&
+git cherry-pick task-cache-photos &&
+git branch -f task-cache-photos &&
 git cherry-pick cache-photos &&
 git branch -f cache-photos &&
 git cherry-pick cache-avatars &&
