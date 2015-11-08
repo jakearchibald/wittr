@@ -2,12 +2,27 @@ import PostsView from './views/Posts';
 import ToastsView from './views/Toasts';
 import idb from 'idb';
 
+function openDatabase() {
+  // If the browser doesn't support service worker,
+  // we don't care about having a database
+  if (!navigator.serviceWorker) {
+    return Promise.resolve();
+  }
+
+  // TODO: return a promise for a database called 'wittr'
+  // that contains one objectStore: 'wittrs'
+  // that uses 'id' as its key
+  // and has an index called 'by-date', which is sorted
+  // by the 'time' property
+}
+
 export default function IndexController(container) {
   this._container = container;
   this._postsView = new PostsView(this._container);
   this._toastsView = new ToastsView(this._container);
   this._lostConnectionToast = null;
   this._openSocket();
+  this._dbPromise = openDatabase();
   this._registerServiceWorker();
 }
 
@@ -114,5 +129,13 @@ IndexController.prototype._openSocket = function() {
 // called when the web socket sends message data
 IndexController.prototype._onSocketMessage = function(data) {
   var messages = JSON.parse(data);
+
+  this._dbPromise.then(function(db) {
+    if (!db) return;
+
+    // TODO: put each message into the 'wittrs'
+    // object store.
+  });
+
   this._postsView.addPosts(messages);
 };
