@@ -342,5 +342,31 @@ export default {
         return ["Couldn't open the test-db database at all :(", 'sad.gif', false];
       })
     });
+  },
+  ['idb-age']() {
+    return remoteEval(function() {
+      return openDb('test-db').then(db => {
+        if (!Array.from(db.objectStoreNames).includes('people')) {
+          return ["Can't find the 'people' objectStore", 'mistake.gif', false]; 
+        }
+
+        const tx = db.transaction('people');
+        const store = tx.objectStore('people');
+
+        if (!Array.from(store.indexNames).includes('age')) {
+          return ["Can't find the 'age' index in the 'people' objectStore", 'sad.gif', false];
+        }
+
+        const index = store.index('age');
+
+        if (index.keyPath == 'age') {
+          return ["Yay! The age index is working", "17.gif", true];
+        }
+
+        return ["The age index isn't indexed by age", 'nope.gif', false];
+      }, err => {
+        return ["Couldn't open the test-db database at all :(", 'sad.gif', false];
+      })
+    });
   }
 };
