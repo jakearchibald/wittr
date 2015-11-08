@@ -1,3 +1,20 @@
+import idb from 'idb';
+
+function openDb(name) {
+  var maxVersion = 100;
+  var version = 1;
+
+  return Promise.resolve().then(function tryOpen() {
+    return idb.open(name, version, upgradeDb => {
+      upgradeDb.transaction.abort();
+    }).catch(err => {
+      if (version >= maxVersion) throw err;
+      version++;
+      return tryOpen();
+    });
+  });
+}
+
 // This lets the settings server execute code in the 
 // context of the app server.
 // This is so the settings server can confirm tasks

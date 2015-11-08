@@ -329,5 +329,18 @@ export default {
         });
       });
     });
+  },
+  ['idb-animal']() {
+    return remoteEval(function() {
+      return openDb('test-db').then(db => {
+        const tx = db.transaction('keyval');
+        return tx.objectStore('keyval').get('favoriteAnimal').then(animal => {
+          if (!animal) return ["Can't find favoriteAnimal in keyval", 'nope.gif', false];
+          return ["Yay! Your favorite animal is \"" + animal + "\"", "16.gif", true];
+        })
+      }, err => {
+        return ["Couldn't open the test-db database at all :(", 'sad.gif', false];
+      })
+    });
   }
 };
