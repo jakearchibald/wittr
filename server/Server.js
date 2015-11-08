@@ -14,6 +14,7 @@ import indexTemplate from './templates/index';
 import postsTemplate from './templates/posts';
 import postTemplate from './templates/post';
 import remoteExecutorTemplate from './templates/remote-executor';
+import idbTestTemplate from './templates/idb-test';
 import {generateReady, generateMessage} from './generateMessage';
 
 const maxMessages = 30;
@@ -120,6 +121,10 @@ export default class Server {
 
     this._app.get('/remote', (req, res) => {
       res.send(remoteExecutorTemplate());
+    });
+
+    this._app.get('/idb-test/', (req, res) => {
+      res.send(idbTestTemplate());
     });
 
     generateReady.then(_ => {
