@@ -57,19 +57,18 @@ self.addEventListener('fetch', function(event) {
 });
 
 function servePhoto(request) {
-  // Photo urls look like:
-  // /photos/9-8028-7527734776-e1d2bda28e-800px.jpg
-  // But storageUrl has the -800px.jpg bit missing.
-  // Use this url to store & match the image in the cache.
-  // This means you only store one copy of each photo.
   var storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
 
-  // TODO: return images from the "wittr-content-imgs" cache
-  // if they're in there. Otherwise, fetch the images from
-  // the network, put them into the cache, and send it back
-  // to the browser.
-  //
-  // HINT: cache.put supports a plain url as the first parameter
+  return caches.open(contentImgsCache).then(function(cache) {
+    return cache.match(storageUrl).then(function(response) {
+      if (response) return response;
+
+      return fetch(request).then(function(networkResponse) {
+        cache.put(storageUrl, networkResponse.clone());
+        return networkResponse;
+      });
+    });
+  });
 }
 
 self.addEventListener('message', function(event) {

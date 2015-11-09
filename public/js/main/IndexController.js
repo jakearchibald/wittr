@@ -24,8 +24,13 @@ export default function IndexController(container) {
   this._lostConnectionToast = null;
   this._dbPromise = openDatabase();
   this._registerServiceWorker();
+  this._cleanImageCache();
 
   var indexController = this;
+
+  setInterval(function() {
+    indexController._cleanImageCache();
+  }, 1000 * 60 * 5);
 
   this._showCachedMessages().then(function() {
     indexController._openSocket();
@@ -147,6 +152,18 @@ IndexController.prototype._openSocket = function() {
     setTimeout(function() {
       indexController._openSocket();
     }, 5000);
+  });
+};
+
+IndexController.prototype._cleanImageCache = function() {
+  return this._dbPromise.then(function(db) {
+    if (!db) return;
+
+    // TODO: open the 'wittr' object store, get all the messages,
+    // gather all the photo urls.
+    //
+    // Open the 'wittr-content-imgs' cache, and delete any entry
+    // that you no longer need.
   });
 };
 
