@@ -43,8 +43,10 @@ git cherry-pick task-clean-db &&
 git branch -f task-clean-db &&
 git cherry-pick task-cache-photos &&
 git branch -f task-cache-photos &&
-git cherry-pick cache-photos &&
-git branch -f cache-photos &&
+git cherry-pick task-clean-photos &&
+git branch -f task-clean-photos &&
+git cherry-pick task-cache-avatars &&
+git branch -f task-cache-avatars &&
 git cherry-pick cache-avatars &&
 git branch -f cache-avatars &&
 git cherry-pick task-gif-viewer &&
