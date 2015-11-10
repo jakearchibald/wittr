@@ -368,5 +368,63 @@ export default {
         return ["Couldn't open the test-db database at all :(", 'sad.gif', false];
       })
     });
+  },
+  ['idb-store']() {
+    return remoteEval(function() {
+      return openDb('wittr').then(db => {
+        if (!db.objectStoreNames.includes('wittrs')) {
+          return ["There isn't a 'wittrs' objectStore", 'sad.gif', false];
+        }
+
+        const tx = db.transaction('wittrs');
+        const store = tx.objectStore('wittrs');
+
+        if (store.keyPath != 'id') {
+          return ["'wittrs' objectStore doesn't use 'id' as its primary key", 'nope.gif', false];
+        }
+
+        if (!store.indexNames.include('by-date')) {
+          return ["There isn't a 'by-date' index on the 'wittrs' objectStore", 'nope.gif', false];
+        }
+
+        const index = store.index('by-date');
+
+        if (index.keyPath != 'time') {
+          return ["The 'by-date' index isn't using 'time' as its key", 'nope.gif', false];
+        }
+
+        return store.getAll().then(messages => {
+          if (!messages.length) {
+            return ["The objectStore is there, but it's empty", 'sad.gif', false];
+          }
+
+          const looksMessagey = messages.every(message => {
+            return message.id && message.avatar && message.name && message.time && message.body;
+          });
+
+          if (looksMessagey) {
+            return ["The database is set up and populated!", "18.gif", true];
+          }
+
+          return ["Looks like some incorrect data is in the database", 'not-quite.gif', false];
+        });
+      }, () => {
+        return ["Couldn't open the 'wittr' database at all :(", 'sad.gif', false];
+      });
+    });
+  },
+  ['idb-show']() {
+    return remoteEval(function() {
+      return openDb('wittr').then(db => {
+        return openIframe('/').then(iframe => {
+          const win = iframe.contentWindow;
+          const doc = win.document;
+
+          // TODO
+        });
+      }, () => {
+        return ["Couldn't open the 'wittr' database at all :(", 'sad.gif', false];
+      });
+    });
   }
 };

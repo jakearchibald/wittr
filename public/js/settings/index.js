@@ -1,9 +1,8 @@
-import toArray from 'lodash/lang/toArray';
 import TestController from './TestController';
 
 const settingsForm = document.querySelector('.settings-form');
 
-settingsForm.addEventListener('change', event => {
+settingsForm.addEventListener('change', () => {
   fetch(settingsForm.action, {
     method: settingsForm.method,
     body: new FormData(settingsForm)
