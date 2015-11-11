@@ -372,7 +372,7 @@ export default {
   ['idb-store']() {
     return remoteEval(function() {
       return openDb('wittr').then(db => {
-        if (!db.objectStoreNames.includes('wittrs')) {
+        if (!Array.from(db.objectStoreNames).includes('wittrs')) {
           return ["There isn't a 'wittrs' objectStore", 'sad.gif', false];
         }
 
@@ -383,7 +383,7 @@ export default {
           return ["'wittrs' objectStore doesn't use 'id' as its primary key", 'nope.gif', false];
         }
 
-        if (!store.indexNames.include('by-date')) {
+        if (!Array.from(store.indexNames).includes('by-date')) {
           return ["There isn't a 'by-date' index on the 'wittrs' objectStore", 'nope.gif', false];
         }
 

@@ -8,7 +8,6 @@ import http from 'http';
 import url from 'url';
 import net from 'net';
 import Throttle from 'throttle';
-import markovCreator from 'markov';
 import random from 'lodash/number/random';
 import indexTemplate from './templates/index';
 import postsTemplate from './templates/posts';
