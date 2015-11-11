@@ -426,5 +426,59 @@ export default {
         return ["Couldn't open the 'wittr' database at all :(", 'sad.gif', false];
       });
     });
+  },
+  ['idb-clean']() {
+    return remoteEval(function() {
+      return openDb('wittr').then(db => {
+        const tx = db.transaction('wittrs');
+        const store = tx.objectStore('wittrs');
+
+        return store.count().then(num => {
+          if (num > 30) {
+            return ["There are more than 30 items in the store", 'nope.gif', false];
+          }
+
+          if (num < 30) {
+            return ["There are less than 30 items in the store, so it isn't clear if this is working", 'not-quite.gif', false];
+          }
+
+          return ["Looks like the database is being cleaned!", "20.gif", true];
+        });
+      }, () => {
+        return ["Couldn't open the 'wittr' database at all :(", 'sad.gif', false];
+      });
+    });
+  },
+  ['cache-photos']() {
+    return remoteEval(function() {
+      return caches.has('wittr-content-imgs').then(hasCache => {
+        if (!hasCache) return ["There isn't a 'wittr-content-imgs' cache", 'sad.gif', false];
+
+        // clear cache
+        return caches.delete('wittr-content-imgs').then(() => {
+          // TODO: make this an image that isn't included in the app
+          const imageUrlSmall = 'TODO';
+          const imageUrlMedium = 'TODO';
+
+          return fetch(imageUrlMedium).then(medResponse => {
+            return new Promise(r => setTimeout(r, 2000))
+              .then(() => fetch(imageUrlMedium)).then(anotherMedResponse => {
+                if (medResponse.headers.get('Date') != anotherMedResponse.headers.get('Date')) {
+                  return ["Doesn't look like images are being cached", 'nope.gif', false];
+                }
+
+                return fetch(imageUrlSmall).then(smallResponse => {
+                  return Promise.all([smallResponse.blob(), medResponse.blob()]);
+                }).then(blobs => {
+                  if (blobs[0].size != blobs[1].size) {
+                    return ["The originally cached image isn't being returned for different sizes", 'nope.gif', false];
+                  }
+                  return ["Photos are being cached and served correctly!", "20.gif", true];
+                })
+              });
+          });
+        });
+      })
+    });
   }
 };
