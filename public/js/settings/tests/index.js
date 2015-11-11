@@ -467,16 +467,16 @@ export default {
         if (!hasCache) return ["There isn't a 'wittr-content-imgs' cache", 'sad.gif', false];
 
         // clear cache
-        return caches.delete('wittr-content-imgs').then(() => {
-          // TODO: make this an image that isn't included in the app
-          const imageUrlSmall = 'TODO';
-          const imageUrlMedium = 'TODO';
+        // No longer deleting because of https://code.google.com/p/chromium/issues/detail?id=435694
+        return /*caches.delete('wittr-content-imgs')*/Promise.resolve().then(() => {
+          const imageUrlSmall = '/photos/4-3087-2918949798-865f134ef3-320px.jpg';
+          const imageUrlMedium = '/photos/4-3087-2918949798-865f134ef3-640px.jpg';
 
           return fetch(imageUrlMedium).then(medResponse => {
             return new Promise(r => setTimeout(r, 2000))
               .then(() => fetch(imageUrlMedium)).then(anotherMedResponse => {
                 if (medResponse.headers.get('Date') != anotherMedResponse.headers.get('Date')) {
-                  return ["Doesn't look like images are being cached", 'nope.gif', false];
+                  return ["Doesn't look like images are being returned from the cache", 'nope.gif', false];
                 }
 
                 return fetch(imageUrlSmall).then(smallResponse => {
@@ -485,12 +485,40 @@ export default {
                   if (blobs[0].size != blobs[1].size) {
                     return ["The originally cached image isn't being returned for different sizes", 'nope.gif', false];
                   }
-                  return ["Photos are being cached and served correctly!", "20.gif", true];
-                })
+                  return ["Photos are being cached and served correctly!", "21.gif", true];
+                });
               });
           });
         });
-      })
+      });
+    });
+  },
+  ['cache-clean']() {
+    return remoteEval(function() {
+      return caches.open('wittr-content-imgs').then(cache => {
+        const imageUrlMedium = '/photos/4-3087-2918949798-865f134ef3-640px.jpg';
+
+        return fetch(imageUrlMedium).then(() => {
+          return cache.match('/photos/4-3087-2918949798-865f134ef3').then(response => {
+            if (!response) return ["Photos aren't appearing in the cache where we'd expect", 'not-quite.gif', false];
+
+            const start = Date.now();
+
+            return Promise.resolve().then(function checkCache() {
+              if (Date.now() - start > 8000) {
+                return ["The image cache doesn't seem to be getting cleaned", 'nope.gif', false]; 
+              }
+
+              return cache.match('/photos/4-3087-2918949798-865f134ef3').then(response => {
+                if (!response) {
+                  return ["Yay! The image cache is being cleaned!", '22.gif', true];
+                }
+                return new Promise(r => setTimeout(r, 100)).then(checkCache);
+              });
+            });
+          });
+        });
+      });
     });
   }
 };
