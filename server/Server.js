@@ -184,6 +184,8 @@ export default class Server {
   _onWsConnection(socket) {
     const requestUrl = url.parse(socket.upgradeReq.url, true);
 
+    if ('no-socket' in requestUrl.query) return; 
+
     this._sockets.push(socket);
 
     socket.on('close', _ => {

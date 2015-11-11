@@ -23,10 +23,14 @@ IndexController.prototype._openSocket = function() {
     socketUrl.search = 'since=' + latestPostDate.valueOf();
   }
 
+  // this is a little hack for the settings page's tests,
+  // it isn't needed for Wittr
+  socketUrl.search += '&' + location.search.slice(1);
+
   var ws = new WebSocket(socketUrl.href);
 
   // add listeners
-  ws.addEventListener('open', function(event) {
+  ws.addEventListener('open', function() {
     if (indexController._lostConnectionToast) {
       indexController._lostConnectionToast.hide();
     }
@@ -38,7 +42,7 @@ IndexController.prototype._openSocket = function() {
     });
   });
 
-  ws.addEventListener('close', function(event) {
+  ws.addEventListener('close', function() {
     // tell the user
     if (!indexController._lostConnectionToast) {
       indexController._lostConnectionToast = indexController._toastsView.show("Unable to connect. Retrying…");

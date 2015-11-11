@@ -416,11 +416,23 @@ export default {
   ['idb-show']() {
     return remoteEval(function() {
       return openDb('wittr').then(db => {
-        return openIframe('/').then(iframe => {
+        return openIframe('/?no-socket').then(iframe => {
           const win = iframe.contentWindow;
           const doc = win.document;
 
-          // TODO
+          return new Promise(r => setTimeout(r, 500)).then(() => {
+            const times = Array.from(doc.querySelectorAll('.post-content time'));
+            if (!times.length) return ["Page looks empty without the web socket", 'nope.gif', false];
+
+            const inOrder = times.map(t => new Date(t.getAttribute('datetime'))).every((time, i, arr) => {
+              const nextTime = arr[i+1];
+              if (!nextTime) return true;
+              return time >= nextTime;
+            });
+
+            if (!inOrder) return ["So close! But the newest post should appear at the top", 'not-quite.gif', false];
+            return ["Page populated from IDB!", "19.gif", true];
+          });
         });
       }, () => {
         return ["Couldn't open the 'wittr' database at all :(", 'sad.gif', false];
