@@ -467,8 +467,7 @@ export default {
         if (!hasCache) return ["There isn't a 'wittr-content-imgs' cache", 'sad.gif', false];
 
         // clear cache
-        // No longer deleting because of https://code.google.com/p/chromium/issues/detail?id=435694
-        return /*caches.delete('wittr-content-imgs')*/Promise.resolve().then(() => {
+        return caches.delete('wittr-content-imgs').then(() => {
           const imageUrlSmall = '/photos/4-3087-2918949798-865f134ef3-320px.jpg';
           const imageUrlMedium = '/photos/4-3087-2918949798-865f134ef3-640px.jpg';
 
@@ -517,6 +516,30 @@ export default {
               });
             });
           });
+        });
+      });
+    });
+  },
+  ['cache-avatars']() {
+    return remoteEval(function() {
+      return caches.delete('wittr-content-imgs').then(() => {
+        const imageUrlSmall = '/avatars/marc-1x.jpg';
+        const imageUrlMedium = '/avatars/marc-2x.jpg';
+
+        return fetch(imageUrlSmall).then(smallResponse => {
+          return new Promise(r => setTimeout(r, 2000))
+            .then(() => fetch(imageUrlMedium)).then(medResponse => {
+              if (smallResponse.headers.get('Date') != medResponse.headers.get('Date')) {
+                return ["Doesn't look like avatars are being returned from the cache, even if the request is for a different size", 'nope.gif', false];
+              }
+
+              return new Promise(r => setTimeout(r, 2000)).then(() => fetch(imageUrlMedium)).then(anotherMedResponse => {
+                if (medResponse.headers.get('Date') == anotherMedResponse.headers.get('Date')) {
+                  return ["Doesn't look like avatars are being updated after being returned from the cache", 'nope.gif', false];
+                }
+                return ["Avatars are being cached, served and updated correctly!", "23.gif", true];
+              });
+            });
         });
       });
     });
