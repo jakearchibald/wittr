@@ -31,6 +31,8 @@ git cherry-pick task-update-reload &&
 git branch -f task-update-reload &&
 git cherry-pick update-interaction &&
 git branch -f update-interaction &&
+git cherry-pick task-page-skeleton &&
+git branch -f task-page-skeleton &&
 git cherry-pick page-skeleton &&
 git branch -f page-skeleton &&
 git cherry-pick task-idb-people &&
