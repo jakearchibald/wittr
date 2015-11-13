@@ -3,6 +3,8 @@ git cherry-pick task-register-sw &&
 git branch -f task-register-sw &&
 git cherry-pick log-requests &&
 git branch -f log-requests &&
+git cherry-pick task-custom-response &&
+git branch -f task-custom-response &&
 git cherry-pick custom-response &&
 git branch -f custom-response &&
 git cherry-pick gif-response &&
