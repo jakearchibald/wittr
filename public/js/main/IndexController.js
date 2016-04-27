@@ -17,7 +17,7 @@ IndexController.prototype._openSocket = function() {
 
   // create a url pointing to /updates with the ws protocol
   var socketUrl = new URL('/updates', window.location);
-  socketUrl.protocol = 'ws';
+  socketUrl.protocol = window.location.protocol === "https:" ? 'wss' : 'ws';
 
   if (latestPostDate) {
     socketUrl.search = 'since=' + latestPostDate.valueOf();
