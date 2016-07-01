@@ -12,4 +12,4 @@ RUN npm install
 COPY . /usr/src/app
 
 EXPOSE 8888 8889
-CMD [ "npm run serve" ]
+CMD [ "npm", "run", "serve" ]
