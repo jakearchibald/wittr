@@ -6,7 +6,7 @@ This is a silly little demo app for an offline-first course.
 
 Dependencies:
 
-* [Node.js](https://nodejs.org/en/) v0.21.7 or above
+* [Node.js](https://nodejs.org/en/) v0.12.7 or above
 
 Then check out the project and run:
 
