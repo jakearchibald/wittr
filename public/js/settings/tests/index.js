@@ -498,24 +498,26 @@ export default {
         const imageUrlMedium = '/photos/4-3087-2918949798-865f134ef3-640px.jpg';
 
         return fetch(imageUrlMedium).then(() => {
-          return cache.match('/photos/4-3087-2918949798-865f134ef3').then(response => {
-            if (!response) return ["Photos aren't appearing in the cache where we'd expect", 'not-quite.gif', false];
+          return new Promise(r => setTimeout(r, 2000))
+            .then(() => cache.match('/photos/4-3087-2918949798-865f134ef3'))
+            .then(response => {
+              if (!response) return ["Photos aren't appearing in the cache where we'd expect", 'not-quite.gif', false];
 
-            const start = Date.now();
+              const start = Date.now();
 
-            return Promise.resolve().then(function checkCache() {
-              if (Date.now() - start > 8000) {
-                return ["The image cache doesn't seem to be getting cleaned", 'nope.gif', false]; 
-              }
-
-              return cache.match('/photos/4-3087-2918949798-865f134ef3').then(response => {
-                if (!response) {
-                  return ["Yay! The image cache is being cleaned!", '22.gif', true];
+              return Promise.resolve().then(function checkCache() {
+                if (Date.now() - start > 8000) {
+                  return ["The image cache doesn't seem to be getting cleaned", 'nope.gif', false];
                 }
-                return new Promise(r => setTimeout(r, 100)).then(checkCache);
+
+                return cache.match('/photos/4-3087-2918949798-865f134ef3').then(response => {
+                  if (!response) {
+                    return ["Yay! The image cache is being cleaned!", '22.gif', true];
+                  }
+                  return new Promise(r => setTimeout(r, 100)).then(checkCache);
+                });
               });
             });
-          });
         });
       });
     });
