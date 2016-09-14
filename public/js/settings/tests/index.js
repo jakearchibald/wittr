@@ -497,7 +497,7 @@ export default {
       return caches.open('wittr-content-imgs').then(cache => {
         const imageUrlMedium = '/photos/4-3087-2918949798-865f134ef3-640px.jpg';
 
-        return fetch(imageUrlMedium).then(() => {
+        return fetch(imageUrlMedium).then(r => r.blob()).then(() => new Promise(r => setTimeout(r, 500))).then(() => {
           return cache.match('/photos/4-3087-2918949798-865f134ef3').then(response => {
             if (!response) return ["Photos aren't appearing in the cache where we'd expect", 'not-quite.gif', false];
 
