@@ -27,3 +27,10 @@ You can also configure the ports:
 ```sh
 npm run serve -- --server-port=8000 --config-server-port=8001
 ```
+
+# Troubleshooting
+
+- Errors while executing `npm run serve`
+  - The first thing to try is to upgrade to latest version of node
+  - If latest version also produces errors, try installing v4.5.0
+    - An easy for that would be to use `nvm` as discussed [here](http://stackoverflow.com/a/7718438/1585523)
