@@ -1,6 +1,7 @@
 import express from 'express';
 import zlib from 'zlib';
 import fs from 'fs';
+import path from 'path';
 import os from 'os';
 import compression from 'compression';
 import {Server as WebSocketServer} from 'ws';
@@ -77,9 +78,9 @@ export default class Server {
     this._app.use('/css', express.static('../public/css', staticOptions));
     this._app.use('/imgs', express.static('../public/imgs', staticOptions));
     this._app.use('/avatars', express.static('../public/avatars', staticOptions));
-    this._app.use('/sw.js', express.static('../public/sw.js', staticOptions));
-    this._app.use('/sw.js.map', express.static('../public/sw.js.map', staticOptions));
-    this._app.use('/manifest.json', express.static('../public/manifest.json', staticOptions));
+    this._app.use('/sw.js', (req, res) => res.sendFile(path.resolve('../public/sw.js'), staticOptions));
+    this._app.use('/sw.js.map', (req, res) => res.sendFile(path.resolve('../public/sw.js.map'), staticOptions));
+    this._app.use('/manifest.json', (req, res) => res.sendFile(path.resolve('../public/manifest.json'), staticOptions));
 
     this._app.get('/', (req, res) => {
       res.send(indexTemplate({
