@@ -3,9 +3,8 @@ version: '2.1'
 services:
     witter:
         image: node:latest
-        container_name: c-witter
-        # command: /bin/bash -c "npm install && npm run serve"
-        command: /bin/bash ./start.sh
+        container_name: c-wittr
+        command: /bin/bash -c "npm install && npm run serve"
         working_dir: /usr/src/app
         volumes:
             - .:/usr/src/app
