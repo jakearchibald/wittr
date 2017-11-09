@@ -152,7 +152,11 @@ export default class Server {
 
   _broadcast(obj) {
     const msg = JSON.stringify(obj);
-    this._sockets.forEach(socket => socket.send(msg));
+    this._sockets.forEach(socket => {
+      socket.send(msg, (err) => {
+        if (err) console.error(err);
+      });
+    });
   }
 
   _onServerConnection(socket) {
