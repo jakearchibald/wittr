@@ -28,6 +28,22 @@ You can also configure the ports:
 npm run serve -- --server-port=8000 --config-server-port=8001
 ```
 
+## Fancy running this in a Docker container?. Follow below.
+
+Dependencies:
+
+* [Docker](https://www.docker.com/)
+
+Build docker image
+```
+docker-compose build
+```
+
+Launch docker container
+```
+docker-compose up
+```
+
 # Troubleshooting
 
 - Errors while executing `npm run serve`
