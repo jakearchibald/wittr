@@ -48,7 +48,7 @@ You can also configure the ports:
 npm run serve -- --server-port=8000 --config-server-port=8001
 ```
 
-If you want to update the port, you could update the command in docker-compose.yml
+If you want to update the port, you could update the command in start.sh
 
 ## Troubleshooting
 
