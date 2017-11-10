@@ -1,7 +1,7 @@
 version: '2.1'
 
 services:
-    witter:
+    wittr:
         image: node:latest
         container_name: c-wittr
         # command: /bin/bash -c "npm install && npm run serve"
