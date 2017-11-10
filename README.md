@@ -40,7 +40,14 @@ You can also configure the ports:
 npm run serve -- --server-port=8000 --config-server-port=8001
 ```
 
-If you want to update the port, you could update the command in start.sh
+If you are using docker-compose, update the host port(s) in docker-compose.yml
+
+```yml
+ports:
+  # <host>:<container>
+  - 8000:8888
+  - 8001:8889
+```
 
 ## Troubleshooting
 
@@ -48,3 +55,4 @@ If you want to update the port, you could update the command in start.sh
   * The first thing to try is to upgrade to latest version of node
   * If latest version also produces errors, try installing v4.5.0
     * An easy for that would be to use `nvm` as discussed [here](http://stackoverflow.com/a/7718438/1585523)
+* If you faced any node-sass errors, try running `npm rebuild node-sass --force` or remove __node_modules__ folder and run `npm install` again
