@@ -30,14 +30,6 @@ npm install
 npm run serve
 ```
 
-or you could run
-
-```sh
-npm start
-```
-
-Which will take care of installing dependencies, then starting!
-
 ## Using the app
 
 You should now have the app server at [localhost:8888](http://localhost:8888) and the config server at [localhost:8889](http://localhost:8889).

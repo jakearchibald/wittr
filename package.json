@@ -5,8 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "gulp serve",
-    "start": "if [ ! -d node_modules ] ; then npm install ; fi ; npm run serve"
+    "serve": "gulp serve"
   },
   "author": "",
   "license": "ISC",
