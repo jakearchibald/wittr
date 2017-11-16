@@ -42,7 +42,7 @@ docker-compose up
 
 Here also you should have the app server at [localhost:8888](http://localhost:8888) and the config server at [localhost:8889](http://localhost:8889).
 
-And you configure the ports by chaning them in docker-compose.yml before starting
+You can configure the ports by changing them in `docker-compose.yml` before starting:
 
 ```yml
 ports:
@@ -53,8 +53,8 @@ ports:
 
 ## Troubleshooting
 
-* Errors while executing `npm run serve`
-  * The first thing to try is to upgrade to latest version of node
-  * If latest version also produces errors, try installing v4.5.0
-    * An easy for that would be to use `nvm` as discussed [here](http://stackoverflow.com/a/7718438/1585523)
-* If you faced any node-sass errors, try running `npm rebuild node-sass --force` or remove __node_modules__ folder and run `npm install` again
+* Errors while executing `npm run serve`.
+  * The first thing to try is to upgrade to latest version of node.
+  * If latest version also produces errors, try installing v4.5.0.
+    * An easy fix for that would be [to use `nvm`](http://stackoverflow.com/a/7718438/1585523).
+* If you get any node-sass errors, try running `npm rebuild node-sass --force` or the remove `node_modules` folder and run `npm install` again
