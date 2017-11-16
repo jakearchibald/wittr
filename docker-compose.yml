@@ -1,5 +1,19 @@
-witter:
-    build: .
-    ports:
-        - 8888:8888
-        - 8889:8889
+version: '2.1'
+
+services:
+    wittr:
+        image: node:latest
+        container_name: c-wittr
+        command: /bin/bash -c "if [ ! -d node_modules ] ; then npm install ; fi && npm run serve"
+        working_dir: /usr/src/app
+        volumes:
+            - .:/usr/src/app
+        ports:
+            - 8888:8888
+            - 8889:8889
+        healthcheck:
+            test: "wget -q -O - http://localhost:8888"
+            interval: 1s
+            timeout: 30s
+            retries: 300
+        restart: unless-stopped
