@@ -4,12 +4,6 @@ This is a silly little demo app for an offline-first course.
 
 You could run the app either using machine dependnecies, or using docker
 
-## Running using docker
-
-```sh
-docker-compose up
-```
-
 ## Running using local machine
 
 ### Installing
@@ -30,7 +24,7 @@ npm install
 npm run serve
 ```
 
-## Using the app
+### Using the app
 
 You should now have the app server at [localhost:8888](http://localhost:8888) and the config server at [localhost:8889](http://localhost:8889).
 
@@ -40,7 +34,15 @@ You can also configure the ports:
 npm run serve -- --server-port=8000 --config-server-port=8001
 ```
 
-If you are using docker-compose, update the host port(s) in docker-compose.yml
+## Running using docker
+
+```sh
+docker-compose up
+```
+
+Here also you should have the app server at [localhost:8888](http://localhost:8888) and the config server at [localhost:8889](http://localhost:8889).
+
+And you configure the ports by chaning them in docker-compose.yml before starting
 
 ```yml
 ports:
