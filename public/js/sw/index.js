@@ -3,6 +3,27 @@ self.addEventListener('install', function(event) {
     // TODO: change the site's theme, eg swap the vars in public/scss/_theme.scss
     // Ensure at least $primary-color changes
     // TODO: change cache name to 'wittr-static-v2'
+    caches.open('wittr-static-v2').then(function(cache) {
+
+    caches.open('wittr-static-v1').then(function(cache) {
+
+// self.addEventListener('fetch', function(event) {
+//  event.respondWith(
+//    fetch(event.request).then(function(response) {
+//      if (response.status === 404) {
+//        // TODO: instead, respond with the gif at
+//        // /imgs/dr-evil.gif
+//        // using a network request
+//        return fetch('/imgs/dr-evil.gif');
+//      }
+//      return response;
+//    }).catch(function() {
+//      return new Response("Uh oh, that totally failed!");
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    // TODO: open a cache named 'wittr-static-v1'
+    // Add cache the urls from urlsToCache
     caches.open('wittr-static-v1').then(function(cache) {
       return cache.addAll([
         '/',
@@ -19,6 +40,7 @@ self.addEventListener('install', function(event) {
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     // TODO: remove the old cache
+    caches.delete('wittr-static-v1')
   );
 });
 
@@ -28,4 +50,40 @@ self.addEventListener('fetch', function(event) {
       return response || fetch(event.request);
     })
   );
+});
+
+  // TODO: respond with an entry from the cache if there is one.
+  // If there isn't, fetch from the network.
+
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      // If request is truthy, return response
+      if (response) return response;
+      // Or fetch to the network for the original response
+      return fetch(event.request)
+    })
+  )
+}) 
+
+  // Leave this blank for now.
+  // We'll get to this in the next task.
+
+self.addEventListener('fetch', function(event) {
+  // TODO: only respond to requests with a
+  // url ending in ".jpg"
+  // if (event.request.url.endsWith('.jpg')) {
+  //  event.respondWith(
+  //    fetch('/imgs/dr-evil.gif')
+  //  )
+  // };
+
+  // TODO: respond to all requests with an html response
+	// containing an element with class="a-winner-is-me".
+	// Ensure the Content-Type of the response is "text/html"
+  // event.respondWith(
+  //  new Response('<b class="a-winner-is-me">Hello!</b>', {
+  //   headers: {'Content-Type': 'text/html'}
+  //  })
+  // )
+
 });
