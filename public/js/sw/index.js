@@ -1,3 +1,7 @@
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open('wittr-static-v1').then(function(cache) {
+
 // self.addEventListener('fetch', function(event) {
 //  event.respondWith(
 //    fetch(event.request).then(function(response) {
@@ -15,7 +19,7 @@ self.addEventListener('install', function(event) {
   event.waitUntil(
     // TODO: open a cache named 'wittr-static-v1'
     // Add cache the urls from urlsToCache
-    caches.open('wittr-statis-v1').then(function(cache) {
+    caches.open('wittr-static-v1').then(function(cache) {
       return cache.addAll([
         '/',
         'js/main.js',
@@ -29,6 +33,19 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
+  // TODO: respond with an entry from the cache if there is one.
+  // If there isn't, fetch from the network.
+
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      // If request is truthy, return response
+      if (response) return response;
+      // Or fetch to the network for the original response
+      return fetch(event.request)
+    })
+  )
+}) 
+
   // Leave this blank for now.
   // We'll get to this in the next task.
 
@@ -51,3 +68,4 @@ self.addEventListener('fetch', function(event) {
   // )
 
 });
+
