@@ -1,5 +1,7 @@
 var staticCacheName = 'wittr-static-v7';
+// Cache for image
 var contentImgsCache = 'wittr-content-imgs';
+// Array to handle all important caches
 var allCaches = [
   staticCacheName,
   contentImgsCache
@@ -43,6 +45,8 @@ self.addEventListener('fetch', function(event) {
       event.respondWith(caches.match('/skeleton'));
       return;
     }
+
+    //method for handling photo request
     if (requestUrl.pathname.startsWith('/photos/')) {
       event.respondWith(servePhoto(event.request));
       return;
@@ -56,6 +60,7 @@ self.addEventListener('fetch', function(event) {
   );
 });
 
+  // defining the servePhoto method:
 function servePhoto(request) {
   // Photo urls look like:
   // /photos/9-8028-7527734776-e1d2bda28e-800px.jpg
@@ -64,12 +69,24 @@ function servePhoto(request) {
   // This means you only store one copy of each photo.
   var storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
 
+  // 4.10
   // TODO: return images from the "wittr-content-imgs" cache
   // if they're in there. Otherwise, fetch the images from
   // the network, put them into the cache, and send it back
   // to the browser.
   //
   // HINT: cache.put supports a plain url as the first parameter
+
+  return caches.open(contentImgsCache).then(function(cache) {
+    return cache.match(storageUrl).then(function(response) {
+      if (response) return response;
+
+      return fetch(request).then(function(networkResponse) {
+        cache.put(storageUrl, networkResponse.clone());
+        return networkResponse;
+      });
+    });
+  });
 }
 
 self.addEventListener('message', function(event) {
