@@ -159,7 +159,7 @@ IndexController.prototype._cleanImageCache = function() {
   return this._dbPromise.then(function(db) {
     if (!db) return;
 
-    // TODO: open the 'wittr' object store, get all the messages,
+    // TODO: open the 'wittrs' object store, get all the messages,
     // gather all the photo urls.
     //
     // Open the 'wittr-content-imgs' cache, and delete any entry
