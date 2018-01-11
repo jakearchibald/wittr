@@ -152,9 +152,10 @@ IndexController.prototype._openSocket = function() {
 
 // called when the web socket sends message data
 IndexController.prototype._onSocketMessage = function(data) {
+  var indexController = this;
   var messages = JSON.parse(data);
 
-  this._dbPromise.then(function(db) {
+  indexController._dbPromise.then(function(db) {
     if (!db) return;
 
     var tx = db.transaction('wittrs', 'readwrite');
@@ -171,5 +172,5 @@ IndexController.prototype._onSocketMessage = function(data) {
     // backwards.
   });
 
-  this._postsView.addPosts(messages);
+  indexController._postsView.addPosts(messages);
 };
