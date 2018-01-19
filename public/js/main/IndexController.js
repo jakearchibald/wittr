@@ -13,6 +13,9 @@ export default function IndexController(container) {
 
 IndexController.prototype._registerServiceWorker = function() {
   // TODO: register service worker
+  self.addEventListener('fetch', function(event) {
+    console.log(event.request);
+  })
 };
 
 // open a connection to the server for live updates
