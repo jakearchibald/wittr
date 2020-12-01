@@ -65,7 +65,7 @@ export default class Server {
       server: this._appServer,
       path: '/updates'
     });
-    
+
     const staticOptions = {
       maxAge: 0
     };
@@ -101,7 +101,11 @@ export default class Server {
     this._app.get('/photos/:farm-:server-:id-:secret-:type.jpg', (req, res) => {
       const flickrUrl = `http://farm${req.params.farm}.staticflickr.com/${req.params.server}/${req.params.id}_${req.params.secret}_${imgSizeToFlickrSuffix[req.params.type]}.jpg`;
       const flickrRequest = http.request(flickrUrl, flickrRes => {
-        flickrRes.pipe(res);
+        Object.keys(flickrRes.headers).forEach((header) => {
+          res.setHeader(header, flickrRes.headers[header]);
+        });
+        // flickrRes.pipe(res);
+        res.sendStatus(301)
       });
 
       flickrRequest.on('error', err => {
@@ -189,7 +193,7 @@ export default class Server {
   _onWsConnection(socket) {
     const requestUrl = url.parse(socket.upgradeReq.url, true);
 
-    if ('no-socket' in requestUrl.query) return; 
+    if ('no-socket' in requestUrl.query) return;
 
     this._sockets.push(socket);
 
